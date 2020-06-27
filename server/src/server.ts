@@ -14,14 +14,14 @@ app.get('/', (req: Request, res: Response) => {
 
 app.post('/problem', async (req: Request, res: Response, next: NextFunction) => {
   switch (req.body.source) {
-    case "r/dailyprogrammer":
+    case "reddit":
       res.send(await controllers.reddit())
       break;
-    case "leetcode":
-      res.send(controllers.leetcode())
+    case "projectEuler":
+      res.send(await controllers.projectEuler())
       break;
-    case "codingbat":
-      res.send(controllers.codingbat())
+    case "codingBat":
+      res.send(await controllers.codingBat())
       break;
     default:
       throw new Error("Invalid problem source given");

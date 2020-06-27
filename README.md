@@ -1,48 +1,33 @@
-# extsn README
+# Daily Problem for VSCode
 
-This is the README for your extension "extsn". After writing up a brief description, we recommend including the following sections.
+Daily Problem is a super simple VSCode add-on that collects a problem from the internet and brings it directly into your editor. Practice your programming skills with ease.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Daily Problem currently supports problems from r/dailyprogrammer, ProjectEuler, and CodingBat. It fetches a random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.py` file for you to begin your solution. Here's an example of an output.
 
-For example if there is an image subfolder under your extension project workspace:
+![Displaying the problem](docs/assets/creates-problem.png)
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+> In the future, there is a plan to support a different preferred export type (other than Python), and problems from different websites.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+n/a
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+In the future, there will be an option to set your preferred solving language.
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+TODO: use the `contributes.configuration` extension point to set this up!
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+TBD
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+This is currently being built as a part of the Microsoft VSCode Hackathon. Release notes to come following this weekend.
 
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+The initial release of Daily Problem is described above.

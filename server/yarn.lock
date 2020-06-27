@@ -251,6 +251,11 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
+beautiful-dom@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/beautiful-dom/-/beautiful-dom-1.0.7.tgz#747261a59dccf9021e9618cb14325fdcad78ab09"
+  integrity sha512-qg7LB4i+WJ1fQZwnQxAfUO5PefZ+PxkIx2kN8IhfxhDVvT9PF4CIYFq0K59esERFQ+DpC8OAcg3oFNcrZI39XQ==
+
 binary-extensions@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.1.0.tgz#30fa40c9e7fe07dbc895678cd287024dea241dd9"

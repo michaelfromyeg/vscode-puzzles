@@ -1,4 +1,5 @@
 import Axios, { AxiosResponse, AxiosError } from 'axios';
+import BeautifulDom from 'beautiful-dom';
 
 export async function reddit() {
   console.log("Reddit called!")
@@ -10,10 +11,30 @@ export async function reddit() {
   }
 }
 
-export function leetcode() {
-  console.log("Leetcode called!")
+export async function projectEuler() {
+  console.log("ProjectEuler called!")
+  // Get the HTML text from a random page
+  const result: any = await Axios.get(`https://projecteuler.net/problem=100`)
+  const dom = new BeautifulDom(result.data);
+  const node = dom.querySelector('div.problem_content');
+  const text = node.textContent;
+  console.log(text)
+  // const text = "pe"
+  return {
+    "problem": text
+  }
 }
 
-export function codingbat() {
-  console.log("Codingbat called!")
+export async function codingBat() {
+  console.log("CodingBat called!")
+  // Get the HTML text from a random page
+  const result: any = await Axios.get(`https://codingbat.com/prob/p187868`)
+  const dom = new BeautifulDom(result.data);
+  //const node = dom.querySelector('p.max2');
+  //const text = node.textContent;
+  const complexQuery = dom.querySelectorAll('p table tr td div');
+  const text = complexQuery[0].textContent
+  return {
+    "problem": text
+  }
 }
