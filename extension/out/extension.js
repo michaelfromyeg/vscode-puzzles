@@ -12,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const axios_1 = require("axios");
+const fs = require("fs");
+const mustache_1 = require("mustache");
+// TODO: get this working
+// import * as template from "./template.md"
 function activate(context) {
     console.log('Congratulations, your extension "extsn" is now active!');
     // Implementation of the command provided with registerCommand
@@ -20,20 +24,53 @@ function activate(context) {
         // vscode.window.showInformationMessage('Running HelloWorld...');
         try {
             const result = yield axios_1.default.post("http://localhost:3000/problem", {
-                source: "r/dailyprogrammer"
+                source: "reddit"
             });
             const text = result.data.problem;
-            console.log(text);
-            vscode.window.showInformationMessage(text);
+            createFile(text);
+            vscode.window.showInformationMessage("Problem created! Get to solving.");
         }
         catch (e) {
-            console.error("Err");
-            vscode.window.showInformationMessage("error");
+            console.error(`Error: ${e}`);
+            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
         }
     }));
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
+const createDir = () => {
+    const today = new Date();
+    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
+    const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(today);
+    const dirName = `${day}-${month}-${year}`;
+    try {
+        fs.mkdir(`${__dirname}/${dirName}`, (err) => console.error(err));
+    }
+    catch (e) {
+        console.error(`Error: ${e}`);
+    }
+    return dirName;
+};
+const createFile = (text) => {
+    const dirName = createDir();
+    // const template = fs.readFileSync(`./template.md`).toString();
+    const template = `# {{ title }} (by Daily Problem)
+
+## from {{ source }}
+
+{{ problem }}
+`;
+    const data = {
+        title: "Reddit Challenge",
+        source: "r/dailyprogrammer",
+        problem: text,
+    };
+    // Render template with Mustache
+    const output = mustache_1.render(template, data);
+    fs.writeFileSync(`${__dirname}/${dirName}/problem.md`, output);
+    fs.writeFileSync(`${__dirname}/${dirName}/solution.py`, `# Write your solution here!`);
+    return null;
+};
 function deactivate() { }
 exports.deactivate = deactivate;
 //# sourceMappingURL=extension.js.map
