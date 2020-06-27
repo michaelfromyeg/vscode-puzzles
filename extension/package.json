@@ -1,6 +1,6 @@
 {
-	"name": "dailyproblem",
-	"displayName": "Daily Problem",
+	"name": "vscode-puzzle",
+	"displayName": "vscode-puzzle",
 	"description": "A tool to fetch coding problems to be displayed in VSCode",
 	"license": "MIT",
 	"version": "0.0.1",
@@ -20,15 +20,15 @@
 		"commands": [
 			{
 				"command": "extsn.getReddit",
-				"title": "Daily Problem: r/dailyprogrammer"
+				"title": "Puzzle: r/dailyprogrammer"
 			},
 			{
 				"command": "extsn.getProjectEuler",
-				"title": "Daily Problem: Project Euler"
+				"title": "Puzzle: Project Euler"
 			},
 			{
 				"command": "extsn.getCodingBat",
-				"title": "Daily Problem: Coding Bat"
+				"title": "Puzzle: Coding Bat"
 			}
 		]
 	},

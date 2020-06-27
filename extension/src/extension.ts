@@ -9,7 +9,7 @@ import { AllHtmlEntities } from "html-entities";
 // import * as template from "./template.md"
 
 export const activate = (context: vscode.ExtensionContext) => {
-	console.log("Daily Problem is now active!");
+	console.log("vscode-puzzle is now active!");
 	
 	const reddit = vscode.commands.registerCommand('extsn.getReddit', async () => {
 		try {
@@ -79,7 +79,7 @@ const createFile = (text: string, source: string) => {
 	console.log('md', markdown);
 
 	const data = {
-		title: "Daily Problem",
+		title: "Today's Puzzle",
 		source: source,
 		problem: markdown,
 	}

@@ -1,10 +1,10 @@
-# Daily Problem for VSCode
+# vscode-puzzle
 
-Daily Problem is a super simple VSCode add-on that collects a problem from the internet and brings it directly into your editor. Practice your programming skills with ease.
+vscode-puzzle is a super simple VSCode add-on that collects a problem from the internet and brings it directly into your editor. Practice your programming skills with ease.
 
 ## Features
 
-Daily Problem currently supports problems from r/dailyprogrammer, ProjectEuler, and CodingBat. It fetches a random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.py` file for you to begin your solution. Here's an example of an output.
+vscode-puzzle currently supports problems from r/dailyprogrammer, ProjectEuler, and CodingBat. It fetches a random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.py` file for you to begin your solution. Here's an example of an output.
 
 ![Displaying the problem](assets/creates-problem.png)
 
@@ -30,4 +30,4 @@ This is currently being built as a part of the Microsoft VSCode Hackathon. Relea
 
 ### 1.0.0
 
-The initial release of Daily Problem is described above.
+The initial release of vscode-puzzle is described above.

@@ -1,4 +1,4 @@
-# {{ title }} (by Daily Problem)
+# {{ title }} (vscode-puzzle)
 
 ## from {{ source }}
 
