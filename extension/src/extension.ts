@@ -2,22 +2,18 @@ import * as vscode from 'vscode';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 import * as fs from "fs";
 import { render } from "mustache";
+import { BASE_URL, TEMPLATE, PYTHON } from "./constants";
+import { AllHtmlEntities } from "html-entities";
+
 // TODO: get this working
 // import * as template from "./template.md"
 
-export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "extsn" is now active!');
-
-	// Implementation of the command provided with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extsn.getProblem', async () => {
-		// vscode.window.showInformationMessage('Running HelloWorld...');
+export const activate = (context: vscode.ExtensionContext) => {
+	console.log("Daily Problem is now active!");
+	
+	const reddit = vscode.commands.registerCommand('extsn.getReddit', async () => {
 		try {
-			const result: any = await Axios.post("http://localhost:3000/problem", {
-				source: "reddit"
-			});
-			const text = result.data.problem
-			createFile(text);
+			await generateProblem("reddit");
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`)
@@ -25,7 +21,40 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(disposable);
+	const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', async () => {
+		try {
+			await generateProblem("projectEuler");
+			vscode.window.showInformationMessage("Problem created! Get to solving.");
+		} catch (e) {
+			console.error(`Error: ${e}`)
+			vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+		}
+	});
+
+	const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', async () => {
+		try {
+			await generateProblem("codingBat");
+			vscode.window.showInformationMessage("Problem created! Get to solving.");
+		} catch (e) {
+			console.error(`Error: ${e}`)
+			vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+		}
+	});
+
+	// Register functions
+	context.subscriptions.push(reddit, projectEuler, codingBat);
+}
+
+const generateProblem = async (source: string): Promise<any> => {
+	const text = await textFromSource(source);
+	createFile(text, source);
+}
+
+const textFromSource = async (source: string): Promise<any> => {
+	const result = await Axios.post(`${BASE_URL}/problem`, {
+		source: source
+	})
+	return result.data.problem
 }
 
 const createDir = (): string => {
@@ -41,28 +70,26 @@ const createDir = (): string => {
 	return dirName;
 }
 
-const createFile = (text: string): null => {
+const createFile = (text: string, source: string) => {
 	const dirName = createDir();
-
 	// const template = fs.readFileSync(`./template.md`).toString();
-	const template = `# {{ title }} (by Daily Problem)
 
-## from {{ source }}
-
-{{ problem }}
-`
+	const entities = new AllHtmlEntities();
+	const markdown = entities.decode(text);
+	console.log('md', markdown);
 
 	const data = {
-		title: "Reddit Challenge",
-		source: "r/dailyprogrammer",
-		problem: text,
+		title: "Daily Problem",
+		source: source,
+		problem: markdown,
 	}
 
+	const fileNameExtension = source.toLowerCase();
+
 	// Render template with Mustache
-	const output = render(template, data)
-	fs.writeFileSync(`${__dirname}/${dirName}/problem.md`, output);
-	fs.writeFileSync(`${__dirname}/${dirName}/solution.py`, `# Write your solution here!`);
-	return null;
+	const output = render(TEMPLATE, data)
+	fs.writeFileSync(`${__dirname}/${dirName}/${fileNameExtension}.md`, output);
+	fs.writeFileSync(`${__dirname}/${dirName}/${fileNameExtension}.py`, PYTHON);
 }
 
-export function deactivate() { }
+export const deactivate = () => { }

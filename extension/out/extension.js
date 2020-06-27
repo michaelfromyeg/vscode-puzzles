@@ -14,20 +14,15 @@ const vscode = require("vscode");
 const axios_1 = require("axios");
 const fs = require("fs");
 const mustache_1 = require("mustache");
+const constants_1 = require("./constants");
+const html_entities_1 = require("html-entities");
 // TODO: get this working
 // import * as template from "./template.md"
-function activate(context) {
-    console.log('Congratulations, your extension "extsn" is now active!');
-    // Implementation of the command provided with registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extsn.getProblem', () => __awaiter(this, void 0, void 0, function* () {
-        // vscode.window.showInformationMessage('Running HelloWorld...');
+exports.activate = (context) => {
+    console.log("Daily Problem is now active!");
+    const reddit = vscode.commands.registerCommand('extsn.getReddit', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const result = yield axios_1.default.post("http://localhost:3000/problem", {
-                source: "reddit"
-            });
-            const text = result.data.problem;
-            createFile(text);
+            yield generateProblem("reddit");
             vscode.window.showInformationMessage("Problem created! Get to solving.");
         }
         catch (e) {
@@ -35,9 +30,39 @@ function activate(context) {
             vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
         }
     }));
-    context.subscriptions.push(disposable);
-}
-exports.activate = activate;
+    const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield generateProblem("projectEuler");
+            vscode.window.showInformationMessage("Problem created! Get to solving.");
+        }
+        catch (e) {
+            console.error(`Error: ${e}`);
+            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+        }
+    }));
+    const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield generateProblem("codingBat");
+            vscode.window.showInformationMessage("Problem created! Get to solving.");
+        }
+        catch (e) {
+            console.error(`Error: ${e}`);
+            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+        }
+    }));
+    // Register functions
+    context.subscriptions.push(reddit, projectEuler, codingBat);
+};
+const generateProblem = (source) => __awaiter(void 0, void 0, void 0, function* () {
+    const text = yield textFromSource(source);
+    createFile(text, source);
+});
+const textFromSource = (source) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield axios_1.default.post(`${constants_1.BASE_URL}/problem`, {
+        source: source
+    });
+    return result.data.problem;
+});
 const createDir = () => {
     const today = new Date();
     const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
@@ -51,26 +76,22 @@ const createDir = () => {
     }
     return dirName;
 };
-const createFile = (text) => {
+const createFile = (text, source) => {
     const dirName = createDir();
     // const template = fs.readFileSync(`./template.md`).toString();
-    const template = `# {{ title }} (by Daily Problem)
-
-## from {{ source }}
-
-{{ problem }}
-`;
+    const entities = new html_entities_1.AllHtmlEntities();
+    const markdown = entities.decode(text);
+    console.log('md', markdown);
     const data = {
-        title: "Reddit Challenge",
-        source: "r/dailyprogrammer",
-        problem: text,
+        title: "Daily Problem",
+        source: source,
+        problem: markdown,
     };
+    const fileNameExtension = source.toLowerCase();
     // Render template with Mustache
-    const output = mustache_1.render(template, data);
-    fs.writeFileSync(`${__dirname}/${dirName}/problem.md`, output);
-    fs.writeFileSync(`${__dirname}/${dirName}/solution.py`, `# Write your solution here!`);
-    return null;
+    const output = mustache_1.render(constants_1.TEMPLATE, data);
+    fs.writeFileSync(`${__dirname}/${dirName}/problem-${fileNameExtension}.md`, output);
+    fs.writeFileSync(`${__dirname}/${dirName}/solution-${fileNameExtension}.py`, constants_1.PYTHON);
 };
-function deactivate() { }
-exports.deactivate = deactivate;
+exports.deactivate = () => { };
 //# sourceMappingURL=extension.js.map

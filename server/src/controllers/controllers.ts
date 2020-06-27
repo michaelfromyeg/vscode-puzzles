@@ -6,6 +6,7 @@ export async function reddit() {
   // Get the top post from the subreddit
   const result: any = await Axios.get(`http://www.reddit.com/r/dailyprogrammer/hot.json?limit=1`)
   const text = result.data.data.children.pop().data.selftext
+  console.log(text)
   return {
     "problem": text
   }
@@ -18,8 +19,7 @@ export async function projectEuler() {
   const dom = new BeautifulDom(result.data);
   const node = dom.querySelector('div.problem_content');
   const text = node.textContent;
-  console.log(text)
-  // const text = "pe"
+  console.log(text);
   return {
     "problem": text
   }
@@ -34,6 +34,7 @@ export async function codingBat() {
   //const text = node.textContent;
   const complexQuery = dom.querySelectorAll('p table tr td div');
   const text = complexQuery[0].textContent
+  console.log(text);
   return {
     "problem": text
   }

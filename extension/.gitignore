@@ -1,5 +1,6 @@
 # VSCode
 out/
+*.js
 
 # Logs
 logs
