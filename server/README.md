@@ -1,9 +1,9 @@
 # Server
 
-This folder servers as the backend for the "extsn" VSCode extension, designed at providing you with a daily problem.
+This folder serves as the backend for the "vscode-puzzle" VSCode extension, designed at providing you with a daily coding puzzle. The API is currently live on Heroku [here](https://vscode-puzzle.herokuapp.com/).
 
 ## Guide
 
-TBD
+API specification is TBD!
 
-Deployment: `git subtree push --prefix server heroku master` from the top level directory
+To deploy the application, first commit your changes, and then run `git subtree push --prefix server heroku master` from the top level directory.
