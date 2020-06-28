@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import * as controllers from "./controllers/controllers"
 
 const app: Application = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
