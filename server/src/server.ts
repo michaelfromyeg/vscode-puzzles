@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response } from 'express';
 import bodyParser from "body-parser";
 import * as controllers from "./controllers/controllers"
 
@@ -8,11 +8,11 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_: Request, res: Response) => {
   res.send('The sedulous hyena ate the antelope!');
 });
 
-app.post('/problem', async (req: Request, res: Response, next: NextFunction) => {
+app.post('/problem', async (req: Request, res: Response) => {
   switch (req.body.source) {
     case "reddit":
       res.send(await controllers.reddit())
