@@ -5,3 +5,5 @@ This folder servers as the backend for the "extsn" VSCode extension, designed at
 ## Guide
 
 TBD
+
+Deployment: `git subtree push --prefix server heroku master` from the top level directory

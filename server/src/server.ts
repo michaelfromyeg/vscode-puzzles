@@ -32,5 +32,5 @@ app.listen(port, err => {
   if (err) {
     return console.error(err);
   }
-  return console.log(`server is listening on ${port}`);
+  return console.log('\x1b[36m%s\x1b[0m', `[vscode-puzzle] Listening on port ${port}.`);
 });
