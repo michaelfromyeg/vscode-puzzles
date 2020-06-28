@@ -13,13 +13,14 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const axios_1 = require("axios");
 const fs = require("fs");
+const path = require("path");
 const mustache_1 = require("mustache");
 const constants_1 = require("./constants");
 const html_entities_1 = require("html-entities");
 // TODO: get this working
 // import * as template from "./template.md"
 exports.activate = (context) => {
-    console.log("Daily Problem is now active!");
+    console.log("vscode-puzzle is now active!");
     const reddit = vscode.commands.registerCommand('extsn.getReddit', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield generateProblem("reddit");
@@ -68,11 +69,19 @@ const createDir = () => {
     const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
     const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(today);
     const dirName = `${day}-${month}-${year}`;
-    try {
-        fs.mkdir(`${__dirname}/${dirName}`, (err) => console.error(err));
+    if (vscode.workspace.workspaceFolders) {
+        const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+        console.log('path', vscodePath);
+        const normalizedPath = path.normalize(vscodePath);
+        try {
+            fs.mkdir(`${normalizedPath}/${dirName}`, (err) => console.error(err));
+        }
+        catch (e) {
+            console.error(`Error: ${e}`);
+        }
     }
-    catch (e) {
-        console.error(`Error: ${e}`);
+    else {
+        vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
     }
     return dirName;
 };
@@ -81,17 +90,24 @@ const createFile = (text, source) => {
     // const template = fs.readFileSync(`./template.md`).toString();
     const entities = new html_entities_1.AllHtmlEntities();
     const markdown = entities.decode(text);
-    console.log('md', markdown);
     const data = {
-        title: "Daily Problem",
+        title: "Today's Puzzle",
         source: source,
         problem: markdown,
     };
     const fileNameExtension = source.toLowerCase();
-    // Render template with Mustache
-    const output = mustache_1.render(constants_1.TEMPLATE, data);
-    fs.writeFileSync(`${__dirname}/${dirName}/problem-${fileNameExtension}.md`, output);
-    fs.writeFileSync(`${__dirname}/${dirName}/solution-${fileNameExtension}.py`, constants_1.PYTHON);
+    if (vscode.workspace.workspaceFolders) {
+        const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+        console.log('path', vscodePath);
+        const normalizedPath = path.normalize(vscodePath);
+        // Render template with Mustache
+        const output = mustache_1.render(constants_1.TEMPLATE, data);
+        fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.md`, output);
+        fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.py`, constants_1.PYTHON);
+    }
+    else {
+        // vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
+    }
 };
 exports.deactivate = () => { };
 //# sourceMappingURL=extension.js.map

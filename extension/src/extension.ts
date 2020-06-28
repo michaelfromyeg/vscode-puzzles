@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 import * as fs from "fs";
+import * as path from "path";
 import { render } from "mustache";
-import { BASE_URL, TEMPLATE, PYTHON } from "./constants";
+import { BASE_URL, TEMPLATE, PYTHON, JAVASCRIPT } from "./constants";
 import { AllHtmlEntities } from "html-entities";
 
 // TODO: get this working
@@ -16,7 +17,7 @@ export const activate = (context: vscode.ExtensionContext) => {
 			await generateProblem("reddit");
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
-			console.error(`Error: ${e}`)
+			console.error(`Error: ${e}`);
 			vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
 		}
 	});
@@ -26,7 +27,7 @@ export const activate = (context: vscode.ExtensionContext) => {
 			await generateProblem("projectEuler");
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
-			console.error(`Error: ${e}`)
+			console.error(`Error: ${e}`);
 			vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
 		}
 	});
@@ -36,39 +37,49 @@ export const activate = (context: vscode.ExtensionContext) => {
 			await generateProblem("codingBat");
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
-			console.error(`Error: ${e}`)
+			console.error(`Error: ${e}`);
 			vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
 		}
 	});
 
 	// Register functions
 	context.subscriptions.push(reddit, projectEuler, codingBat);
-}
+};
 
 const generateProblem = async (source: string): Promise<any> => {
 	const text = await textFromSource(source);
 	createFile(text, source);
-}
+};
 
 const textFromSource = async (source: string): Promise<any> => {
 	const result = await Axios.post(`${BASE_URL}/problem`, {
 		source: source
-	})
-	return result.data.problem
-}
+	});
+	return result.data.problem;
+};
 
 const createDir = (): string => {
 	const today = new Date();
-	const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' })
-	const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(today)
-	const dirName = `${day}-${month}-${year}`
-	try {
-		fs.mkdir(`${__dirname}/${dirName}`, (err) => console.error(err));
-	} catch (e) {
-		console.error(`Error: ${e}`)
+	const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
+	const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(today);
+	const dirName = `${day}-${month}-${year}`;
+
+	if (vscode.workspace.workspaceFolders) {
+		const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+		console.log('path', vscodePath)
+		const normalizedPath = path.normalize(vscodePath);
+		try {
+			fs.mkdir(`${normalizedPath}/${dirName}`, (err) => console.error(err));
+		} catch (e) {
+			console.error(`Error: ${e}`);
+		}
+	} else {
+		vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
 	}
+
+	
 	return dirName;
-}
+};
 
 const createFile = (text: string, source: string) => {
 	const dirName = createDir();
@@ -81,14 +92,21 @@ const createFile = (text: string, source: string) => {
 		title: "Today's Puzzle",
 		source: source,
 		problem: markdown,
-	}
+	};
 
 	const fileNameExtension = source.toLowerCase();
 
-	// Render template with Mustache
-	const output = render(TEMPLATE, data)
-	fs.writeFileSync(`${__dirname}/${dirName}/${fileNameExtension}.md`, output);
-	fs.writeFileSync(`${__dirname}/${dirName}/${fileNameExtension}.py`, PYTHON);
-}
+	if (vscode.workspace.workspaceFolders) {
+		const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+		console.log('path', vscodePath)
+		const normalizedPath = path.normalize(vscodePath);
+		// Render template with Mustache
+		const output = render(TEMPLATE, data);
+		fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.md`, output);
+		fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.py`, PYTHON);
+	} else {
+		// vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
+	}
+};
 
-export const deactivate = () => { }
+export const deactivate = () => { };

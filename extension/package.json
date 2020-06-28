@@ -3,6 +3,8 @@
 	"displayName": "vscode-puzzle",
 	"description": "A tool to fetch coding problems to be displayed in VSCode",
 	"license": "MIT",
+	"publisher": "michaelfromyeg",
+	"repository": "github:michaelfromyeg/vscode-puzzle",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.46.0"
@@ -35,7 +37,8 @@
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
 		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
+		"lint": "eslint --fix src --ext ts",
+		"dev": "yarn watch",
 		"watch": "tsc -watch -p ./",
 		"pretest": "yarn run compile && yarn run lint",
 		"test": "node ./out/test/runTest.js"

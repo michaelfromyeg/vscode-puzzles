@@ -1,6 +1,8 @@
 # VSCode
 out/
 *.js
+*.vsix
+.vscode-test/
 
 # Logs
 logs
