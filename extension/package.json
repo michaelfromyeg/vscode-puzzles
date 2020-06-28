@@ -1,36 +1,44 @@
 {
 	"name": "vscode-puzzle",
-	"displayName": "vscode-puzzle",
-	"description": "A tool to fetch coding problems to be displayed in VSCode",
-	"license": "MIT",
-	"publisher": "michaelfromyeg",
-	"repository": "github:michaelfromyeg/vscode-puzzle",
+	"displayName": "VSCode Puzzles",
 	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.46.0"
-	},
+	"publisher": "michaelfromyeg",
+	"description": "A tool to fetch coding problems from r/dailyprogammer, Project Euler and more to be solved directly in VSCode!",
 	"categories": [
 		"Other"
 	],
+	"license": "MIT",
+	"icon": "src/assets/vscode-puzzle-logo-small.png",
+	"galleryBanner": {
+		"color": "#006400",
+		"theme": "dark"
+	},
 	"activationEvents": [
 		"onCommand:extsn.getReddit",
 		"onCommand:extsn.getProjectEuler",
 		"onCommand:extsn.getCodingBat"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/michaelfromyeg/vscode-puzzle.git"
+	},
+	"engines": {
+		"vscode": "^1.46.0"
+	},
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "extsn.getReddit",
-				"title": "Puzzle: r/dailyprogrammer"
+				"title": "VSCode Puzzles: r/dailyprogrammer"
 			},
 			{
 				"command": "extsn.getProjectEuler",
-				"title": "Puzzle: Project Euler"
+				"title": "VSCode Puzzles: Project Euler"
 			},
 			{
 				"command": "extsn.getCodingBat",
-				"title": "Puzzle: Coding Bat"
+				"title": "VSCode Puzzles: Coding Bat"
 			}
 		]
 	},
