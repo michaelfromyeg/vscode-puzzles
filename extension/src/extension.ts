@@ -76,7 +76,6 @@ const createFile = (text: string, source: string) => {
 
 	const entities = new AllHtmlEntities();
 	const markdown = entities.decode(text);
-	console.log('md', markdown);
 
 	const data = {
 		title: "Today's Puzzle",

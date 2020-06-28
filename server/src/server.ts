@@ -28,9 +28,6 @@ app.post('/problem', async (req: Request, res: Response) => {
   }
 })
 
-app.listen(port, err => {
-  if (err) {
-    return console.error(err);
-  }
-  return console.log('\x1b[36m%s\x1b[0m', `[vscode-puzzle] Listening on port ${port}.`);
+app.listen(port, () => {
+  console.log('\x1b[36m%s\x1b[0m', `[vscode-puzzle] Listening on port ${port}.`);
 });
