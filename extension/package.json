@@ -1,14 +1,14 @@
 {
 	"name": "vscode-puzzle",
 	"displayName": "VSCode Puzzles",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "michaelfromyeg",
 	"description": "A tool to fetch coding problems from r/dailyprogammer, Project Euler and more to be solved directly in VSCode!",
 	"categories": [
 		"Other"
 	],
 	"license": "MIT",
-	"icon": "src/assets/vscode-puzzle-logo-small.png",
+	"icon": "images/vscode-puzzle-logo-small.png",
 	"galleryBanner": {
 		"color": "#006400",
 		"theme": "dark"

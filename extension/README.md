@@ -2,13 +2,13 @@
 
 vscode-puzzle is a super simple VSCode add-on that collects a problem from the internet and brings it directly into your editor. Practice your programming skills with ease.
 
-![Banner](src/assets/vscode-puzzle-github.png)
+![Banner](images/vscode-puzzle-github.png)
 
 ## Features
 
 vscode-puzzle currently supports problems from r/dailyprogrammer, ProjectEuler, and CodingBat. It fetches a random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.py` file for you to begin your solution. Here's an example of an output.
 
-![Displaying the problem](src/assets/creates-problem.png)
+![Displaying the problem](images/creates-problem.png)
 
 > In the future, there is a plan to support a different preferred export type (other than Python), and problems from different websites.
 
