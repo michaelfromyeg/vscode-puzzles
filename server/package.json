@@ -30,7 +30,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "beautiful-dom": "^1.0.7",
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
