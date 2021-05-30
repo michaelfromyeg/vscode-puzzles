@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import Axios, { AxiosResponse, AxiosError } from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import * as fs from "fs";
 import * as path from "path";
 import { render } from "mustache";
@@ -10,11 +10,11 @@ import { AllHtmlEntities } from "html-entities";
 // import * as template from "./template.md"
 
 export const activate = (context: vscode.ExtensionContext) => {
-	console.log("vscode-puzzle is now active!");
-	
+	console.log("Puzzles is now active!");
+
 	const reddit = vscode.commands.registerCommand('extsn.getReddit', async () => {
 		try {
-			await generateProblem("reddit");
+			await generateProblem("reddit", undefined);
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`);
@@ -24,7 +24,11 @@ export const activate = (context: vscode.ExtensionContext) => {
 
 	const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', async () => {
 		try {
-			await generateProblem("projectEuler");
+      const input = await vscode.window.showInputBox({
+        // title: 'Problem ID',
+        prompt: 'Enter a problem ID (a number from 1 to 784) or leave empty for a random problem.'
+      });
+			await generateProblem("projectEuler", input);
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`);
@@ -34,7 +38,7 @@ export const activate = (context: vscode.ExtensionContext) => {
 
 	const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', async () => {
 		try {
-			await generateProblem("codingBat");
+			await generateProblem("codingBat", undefined);
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`);
@@ -46,17 +50,17 @@ export const activate = (context: vscode.ExtensionContext) => {
 	context.subscriptions.push(reddit, projectEuler, codingBat);
 };
 
-const generateProblem = async (source: string): Promise<any> => {
-	const text = await textFromSource(source);
-	createFile(text, source);
+const generateProblem = async (source: string, id: string | undefined): Promise<any> => {
+	const data = await textFromSource(source, id);
+	createFile(data.problem, source, data.id);
 };
 
-const textFromSource = async (source: string): Promise<any> => {
-	const result = await Axios.post(`${BASE_URL}/problem`, {
-		source: source
-	});
-	return result.data.problem;
-};
+const textFromSource = async (source: string, id: string | undefined): Promise<any> => {
+  const apiUrl = `${BASE_URL}/puzzle/${source}`;
+  const response: AxiosResponse = await Axios.get(typeof id === 'string' ? `${apiUrl}?id=${id}` : apiUrl);
+  console.log(response);
+  return response.data;
+}
 
 const createDir = (): string => {
 	const today = new Date();
@@ -66,7 +70,7 @@ const createDir = (): string => {
 
 	if (vscode.workspace.workspaceFolders) {
 		const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-		console.log('path', vscodePath)
+    console.log('path', vscodePath);
 		const normalizedPath = path.normalize(vscodePath);
 		try {
 			fs.mkdir(`${normalizedPath}/${dirName}`, (err) => console.error(err));
@@ -77,28 +81,28 @@ const createDir = (): string => {
 		vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
 	}
 
-	
+
 	return dirName;
 };
 
-const createFile = (text: string, source: string) => {
+const createFile = (problem: string, source: string, id: string | number) => { // url: string
 	const dirName = createDir();
 	// const template = fs.readFileSync(`./template.md`).toString();
 
-	const entities = new AllHtmlEntities();
-	const markdown = entities.decode(text);
-
 	const data = {
-		title: "Today's Puzzle",
-		source: source,
-		problem: markdown,
+    title: "Today's Puzzle",
+    date: new Date().toLocaleDateString(),
+    source,
+    id,
+    // url,
+		problem,
 	};
 
 	const fileNameExtension = source.toLowerCase();
 
 	if (vscode.workspace.workspaceFolders) {
 		const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-		console.log('path', vscodePath)
+    console.log('path', vscodePath);
 		const normalizedPath = path.normalize(vscodePath);
 		// Render template with Mustache
 		const output = render(TEMPLATE, data);
