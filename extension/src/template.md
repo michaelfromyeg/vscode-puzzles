@@ -1,5 +1,5 @@
-# {{ title }} (vscode-puzzle)
+# {{ title }} (by Puzzles)
 
-## from {{ source }}
+Source: {{ source }}
 
 {{{ problem }}}

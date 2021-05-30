@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import Axios, { AxiosResponse, AxiosError } from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import * as fs from "fs";
 import * as path from "path";
 import { render } from "mustache";
@@ -10,8 +10,8 @@ import { AllHtmlEntities } from "html-entities";
 // import * as template from "./template.md"
 
 export const activate = (context: vscode.ExtensionContext) => {
-	console.log("vscode-puzzle is now active!");
-	
+	console.log("Puzzles is now active!");
+
 	const reddit = vscode.commands.registerCommand('extsn.getReddit', async () => {
 		try {
 			await generateProblem("reddit");
@@ -52,10 +52,9 @@ const generateProblem = async (source: string): Promise<any> => {
 };
 
 const textFromSource = async (source: string): Promise<any> => {
-	const result = await Axios.post(`${BASE_URL}/problem`, {
-		source: source
-	});
-	return result.data.problem;
+  const response: AxiosResponse = await Axios.get(`${BASE_URL}/puzzle/${source}`);
+  console.log(response);
+	return response.data.problem;
 };
 
 const createDir = (): string => {
@@ -66,7 +65,7 @@ const createDir = (): string => {
 
 	if (vscode.workspace.workspaceFolders) {
 		const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-		console.log('path', vscodePath)
+    console.log('path', vscodePath);
 		const normalizedPath = path.normalize(vscodePath);
 		try {
 			fs.mkdir(`${normalizedPath}/${dirName}`, (err) => console.error(err));
@@ -77,7 +76,7 @@ const createDir = (): string => {
 		vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
 	}
 
-	
+
 	return dirName;
 };
 
@@ -98,7 +97,7 @@ const createFile = (text: string, source: string) => {
 
 	if (vscode.workspace.workspaceFolders) {
 		const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-		console.log('path', vscodePath)
+    console.log('path', vscodePath);
 		const normalizedPath = path.normalize(vscodePath);
 		// Render template with Mustache
 		const output = render(TEMPLATE, data);

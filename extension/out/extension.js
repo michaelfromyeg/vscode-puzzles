@@ -20,7 +20,7 @@ const html_entities_1 = require("html-entities");
 // TODO: get this working
 // import * as template from "./template.md"
 exports.activate = (context) => {
-    console.log("vscode-puzzle is now active!");
+    console.log("Puzzles is now active!");
     const reddit = vscode.commands.registerCommand('extsn.getReddit', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield generateProblem("reddit");
@@ -59,10 +59,9 @@ const generateProblem = (source) => __awaiter(void 0, void 0, void 0, function* 
     createFile(text, source);
 });
 const textFromSource = (source) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield axios_1.default.post(`${constants_1.BASE_URL}/problem`, {
-        source: source
-    });
-    return result.data.problem;
+    const response = yield axios_1.default.get(`${constants_1.BASE_URL}/puzzle/${source}`);
+    console.log(response);
+    return response.data.problem;
 });
 const createDir = () => {
     const today = new Date();
