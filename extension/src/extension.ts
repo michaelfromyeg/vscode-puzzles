@@ -14,7 +14,7 @@ export const activate = (context: vscode.ExtensionContext) => {
 
 	const reddit = vscode.commands.registerCommand('extsn.getReddit', async () => {
 		try {
-			await generateProblem("reddit");
+			await generateProblem("reddit", undefined);
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`);
@@ -24,7 +24,11 @@ export const activate = (context: vscode.ExtensionContext) => {
 
 	const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', async () => {
 		try {
-			await generateProblem("projectEuler");
+      const input = await vscode.window.showInputBox({
+        // title: 'Problem ID',
+        prompt: 'Enter a problem ID (a number from 1 to 784) or leave empty for a random problem.'
+      });
+			await generateProblem("projectEuler", input);
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`);
@@ -34,7 +38,7 @@ export const activate = (context: vscode.ExtensionContext) => {
 
 	const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', async () => {
 		try {
-			await generateProblem("codingBat");
+			await generateProblem("codingBat", undefined);
 			vscode.window.showInformationMessage("Problem created! Get to solving.");
 		} catch (e) {
 			console.error(`Error: ${e}`);
@@ -46,13 +50,14 @@ export const activate = (context: vscode.ExtensionContext) => {
 	context.subscriptions.push(reddit, projectEuler, codingBat);
 };
 
-const generateProblem = async (source: string): Promise<any> => {
-	const data = await textFromSource(source);
+const generateProblem = async (source: string, id: string | undefined): Promise<any> => {
+	const data = await textFromSource(source, id);
 	createFile(data.problem, source, data.id);
 };
 
-const textFromSource = async (source: string): Promise<any> => {
-  const response: AxiosResponse = await Axios.get(`${BASE_URL}/puzzle/${source}`);
+const textFromSource = async (source: string, id: string | undefined): Promise<any> => {
+  const apiUrl = `${BASE_URL}/puzzle/${source}`;
+  const response: AxiosResponse = await Axios.get(typeof id === 'string' ? `${apiUrl}?id=${id}` : apiUrl);
   console.log(response);
   return response.data;
 }

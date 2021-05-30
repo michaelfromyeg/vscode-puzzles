@@ -6,8 +6,12 @@ export const BASE_URL = "http://localhost:8000";
 export const TEMPLATE: string = `# {{ title }} (by [Puzzles](https://github.com/michaelfromyeg/vscode-puzzles))
 
 Created: {{ date }}
+
 Source: {{ source }}
+
 ID: {{ id }}
+
+## Puzzle
 
 {{{ problem }}}
 `;

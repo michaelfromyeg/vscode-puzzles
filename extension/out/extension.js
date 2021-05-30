@@ -22,7 +22,7 @@ exports.activate = (context) => {
     console.log("Puzzles is now active!");
     const reddit = vscode.commands.registerCommand('extsn.getReddit', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield generateProblem("reddit");
+            yield generateProblem("reddit", undefined);
             vscode.window.showInformationMessage("Problem created! Get to solving.");
         }
         catch (e) {
@@ -32,7 +32,11 @@ exports.activate = (context) => {
     }));
     const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield generateProblem("projectEuler");
+            const input = yield vscode.window.showInputBox({
+                // title: 'Problem ID',
+                prompt: 'Enter a problem ID (a number from 1 to 784) or leave empty for a random problem.'
+            });
+            yield generateProblem("projectEuler", input);
             vscode.window.showInformationMessage("Problem created! Get to solving.");
         }
         catch (e) {
@@ -42,7 +46,7 @@ exports.activate = (context) => {
     }));
     const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield generateProblem("codingBat");
+            yield generateProblem("codingBat", undefined);
             vscode.window.showInformationMessage("Problem created! Get to solving.");
         }
         catch (e) {
@@ -53,12 +57,13 @@ exports.activate = (context) => {
     // Register functions
     context.subscriptions.push(reddit, projectEuler, codingBat);
 };
-const generateProblem = (source) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield textFromSource(source);
+const generateProblem = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield textFromSource(source, id);
     createFile(data.problem, source, data.id);
 });
-const textFromSource = (source) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield axios_1.default.get(`${constants_1.BASE_URL}/puzzle/${source}`);
+const textFromSource = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const apiUrl = `${constants_1.BASE_URL}/puzzle/${source}`;
+    const response = yield axios_1.default.get(typeof id === 'string' ? `${apiUrl}?id=${id}` : apiUrl);
     console.log(response);
     return response.data;
 });
