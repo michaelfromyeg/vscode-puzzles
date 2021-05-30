@@ -66,7 +66,7 @@ server.get<{ Querystring: PuzzleQuerystring, Params: PuzzleParams }>('/puzzle/:k
   reply.code(200).send({ source: request.params.kind, id: response.id, problem })
 })
 
-server.listen(process.env.PORT || 8000, (err, address) => {
+server.listen(process.env.PORT || 8000, '0.0.0.0', (err, address) => {
   if (err) {
     console.error(err)
     process.exit(1)
