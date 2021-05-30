@@ -47,15 +47,15 @@ export const activate = (context: vscode.ExtensionContext) => {
 };
 
 const generateProblem = async (source: string): Promise<any> => {
-	const text = await textFromSource(source);
-	createFile(text, source);
+	const data = await textFromSource(source);
+	createFile(data.problem, source, data.id);
 };
 
 const textFromSource = async (source: string): Promise<any> => {
   const response: AxiosResponse = await Axios.get(`${BASE_URL}/puzzle/${source}`);
   console.log(response);
-	return response.data.problem;
-};
+  return response.data;
+}
 
 const createDir = (): string => {
 	const today = new Date();
@@ -80,17 +80,17 @@ const createDir = (): string => {
 	return dirName;
 };
 
-const createFile = (text: string, source: string) => {
+const createFile = (problem: string, source: string, id: string | number) => { // url: string
 	const dirName = createDir();
 	// const template = fs.readFileSync(`./template.md`).toString();
 
-	const entities = new AllHtmlEntities();
-	const markdown = entities.decode(text);
-
 	const data = {
-		title: "Today's Puzzle",
-		source: source,
-		problem: markdown,
+    title: "Today's Puzzle",
+    date: new Date().toLocaleDateString(),
+    source,
+    id,
+    // url,
+		problem,
 	};
 
 	const fileNameExtension = source.toLowerCase();

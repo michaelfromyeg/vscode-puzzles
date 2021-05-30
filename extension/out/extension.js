@@ -16,7 +16,6 @@ const fs = require("fs");
 const path = require("path");
 const mustache_1 = require("mustache");
 const constants_1 = require("./constants");
-const html_entities_1 = require("html-entities");
 // TODO: get this working
 // import * as template from "./template.md"
 exports.activate = (context) => {
@@ -55,13 +54,13 @@ exports.activate = (context) => {
     context.subscriptions.push(reddit, projectEuler, codingBat);
 };
 const generateProblem = (source) => __awaiter(void 0, void 0, void 0, function* () {
-    const text = yield textFromSource(source);
-    createFile(text, source);
+    const data = yield textFromSource(source);
+    createFile(data.problem, source, data.id);
 });
 const textFromSource = (source) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield axios_1.default.get(`${constants_1.BASE_URL}/puzzle/${source}`);
     console.log(response);
-    return response.data.problem;
+    return response.data;
 });
 const createDir = () => {
     const today = new Date();
@@ -84,15 +83,16 @@ const createDir = () => {
     }
     return dirName;
 };
-const createFile = (text, source) => {
+const createFile = (problem, source, id) => {
     const dirName = createDir();
     // const template = fs.readFileSync(`./template.md`).toString();
-    const entities = new html_entities_1.AllHtmlEntities();
-    const markdown = entities.decode(text);
     const data = {
         title: "Today's Puzzle",
-        source: source,
-        problem: markdown,
+        date: new Date().toLocaleDateString(),
+        source,
+        id,
+        // url,
+        problem,
     };
     const fileNameExtension = source.toLowerCase();
     if (vscode.workspace.workspaceFolders) {

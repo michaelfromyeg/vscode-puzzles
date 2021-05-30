@@ -3,9 +3,11 @@
 // export const BASE_URL = "https://vscode-puzzle.herokuapp.com";
 export const BASE_URL = "http://localhost:8000";
 
-export const TEMPLATE: string = `# {{ title }} (by Puzzles)
+export const TEMPLATE: string = `# {{ title }} (by [Puzzles](https://github.com/michaelfromyeg/vscode-puzzles))
 
+Created: {{ date }}
 Source: {{ source }}
+ID: {{ id }}
 
 {{{ problem }}}
 `;
