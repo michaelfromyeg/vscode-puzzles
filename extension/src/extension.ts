@@ -6,12 +6,11 @@ import { render } from "mustache";
 import {
   BASE_URL,
   TEMPLATE,
-  PYTHON,
-  // JAVASCRIPT
+  LANGUAGES
 } from "./constants";
 // import { AllHtmlEntities } from "html-entities";
 
-// TODO: get this working
+// TODO: refactor so that files can be actual files and not strings in TypeScript
 // import * as template from "./template.md"
 
 /**
@@ -197,7 +196,7 @@ const createFile = (problem: string, source: string, id: string | number) => { /
 		// Render template with Mustache
 		const output = render(TEMPLATE, data);
 		fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.md`, output);
-		fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.py`, PYTHON);
+		fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.${LANGUAGES.python[0]}`, LANGUAGES.python[1]);
 	} else {
 		vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
 	}
