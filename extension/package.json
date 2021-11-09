@@ -1,7 +1,7 @@
 {
 	"name": "vscode-puzzle",
 	"displayName": "Puzzles",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"publisher": "michaelfromyeg",
 	"description": "A VSCode extension to work on coding interview problems in your local text editor.",
 	"categories": [
