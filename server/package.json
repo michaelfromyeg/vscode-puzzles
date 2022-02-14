@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/michaelfromyeg/vscode-puzzles#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "beautiful-dom": "^1.0.9",
     "fastify": "^3.17.0",
     "turndown": "^7.0.0"
