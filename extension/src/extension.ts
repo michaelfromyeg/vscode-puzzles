@@ -104,6 +104,14 @@ const adventOfCodeHandler = async () => {
       }
     }
 
+    if (yearInput < 2015) {
+      throw new Error("Invalid year");
+    }
+
+    if (dayInput < 1 || dayInput > 25) {
+      throw new Error("Invalid day");
+    }
+
     // adventOfCode ID is in the form YYYY/day/DD, such as 2021/day/25 for Christmas Day!
     await generateProblem("adventOfCode", `${yearInput}/day/${dayInput}`);
   } catch (e) {

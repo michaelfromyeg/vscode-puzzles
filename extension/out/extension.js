@@ -16,57 +16,142 @@ const fs = require("fs");
 const path = require("path");
 const mustache_1 = require("mustache");
 const constants_1 = require("./constants");
-// TODO: get this working
+// import { AllHtmlEntities } from "html-entities";
+// TODO: refactor so that files can be actual files and not strings in TypeScript
 // import * as template from "./template.md"
+/**
+ * Setup all of the commands; called on installation.
+ *
+ * @param context
+ */
 exports.activate = (context) => {
     console.log("Puzzles is now active!");
-    const reddit = vscode.commands.registerCommand('extsn.getReddit', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield generateProblem("reddit", undefined);
-            vscode.window.showInformationMessage("Problem created! Get to solving.");
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
-        }
-    }));
-    const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const input = yield vscode.window.showInputBox({
-                // title: 'Problem ID',
-                prompt: 'Enter a problem ID (a number from 1 to 784) or leave empty for a random problem.'
-            });
-            yield generateProblem("projectEuler", input);
-            vscode.window.showInformationMessage("Problem created! Get to solving.");
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
-        }
-    }));
-    const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield generateProblem("codingBat", undefined);
-            vscode.window.showInformationMessage("Problem created! Get to solving.");
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
-        }
-    }));
+    const reddit = vscode.commands.registerCommand('extsn.getReddit', redditHandler);
+    const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', projectEulerHandler);
+    const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', codingBatHandler);
+    const adventOfCode = vscode.commands.registerCommand('extsn.getAdventOfCode', adventOfCodeHandler);
     // Register functions
-    context.subscriptions.push(reddit, projectEuler, codingBat);
+    context.subscriptions.push(reddit, projectEuler, codingBat, adventOfCode);
 };
+/**
+ * Call generateProblem for Reddit, without any additional arguments.
+ *
+ * TODO: add support for specifying problem ID.
+ */
+const redditHandler = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield generateProblem("reddit", undefined);
+        vscode.window.showInformationMessage("Problem created! Get to solving.");
+    }
+    catch (e) {
+        console.error(`Error: ${e}`);
+        vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+    }
+});
+/**
+ * Call generateProblem for ProjectEuler, with an optional project ID.
+ */
+const projectEulerHandler = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let id = yield vscode.window.showInputBox({
+            // title: 'Problem ID',
+            prompt: 'Enter a problem ID (a number from 1 to 784) or leave empty for a random problem.'
+        });
+        if (id === '') {
+            id = undefined;
+        }
+        yield generateProblem("projectEuler", id);
+        vscode.window.showInformationMessage("Problem created! Get to solving.");
+    }
+    catch (e) {
+        console.error(`Error: ${e}`);
+        vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+    }
+});
+/**
+ * Call generateProblem for codingBat, without any additional arguments.
+ */
+const codingBatHandler = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield generateProblem("codingBat", undefined);
+        vscode.window.showInformationMessage("Problem created! Get to solving.");
+    }
+    catch (e) {
+        console.error(`Error: ${e}`);
+        vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+    }
+});
+/**
+ * Create an advent of code problem for a specified year and date.
+ *
+ * If year and date left blank, year is set to current year and date is set to the latest date available in December.
+ * Theoretically, this should be "today's problem."
+ */
+const adventOfCodeHandler = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Get the year input from a user; TODO refactor to template
+        let yearInput = yield vscode.window.showInputBox({
+            prompt: 'Enter a year from 2015 to the current year, or leave blank to select the current year.',
+        });
+        if (yearInput === '' || yearInput === undefined) {
+            yearInput = (new Date()).getFullYear();
+        }
+        // Get the day input from a user; TODO refactor to template
+        let dayInput = yield vscode.window.showInputBox({
+            prompt: 'Enter a day from 1 to 25, or leave blank for the latest available date in the current year.'
+        });
+        if (dayInput === '' || dayInput === undefined) {
+            const today = new Date();
+            if (today.getMonth() === 11) {
+                // `11` is the month of December, in JavaScript land!
+                dayInput = today.getDate();
+            }
+            else {
+                dayInput = 1;
+            }
+        }
+        if (yearInput < 2015) {
+            throw new Error("Invalid year");
+        }
+        if (dayInput < 1 || dayInput > 25) {
+            throw new Error("Invalid day");
+        }
+        // adventOfCode ID is in the form YYYY/day/DD, such as 2021/day/25 for Christmas Day!
+        yield generateProblem("adventOfCode", `${yearInput}/day/${dayInput}`);
+    }
+    catch (e) {
+        console.error(`Error: ${e}`);
+        vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
+    }
+});
+/**
+ * Create a problem instance by first calling the backend API and then generating the needed files.
+ *
+ * @param source
+ * @param id
+ */
 const generateProblem = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield textFromSource(source, id);
     createFile(data.problem, source, data.id);
 });
+/**
+ * Call the API to fetch problem data and return JSON payload.
+ *
+ * @param source
+ * @param id
+ * @returns
+ */
 const textFromSource = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
     const apiUrl = `${constants_1.BASE_URL}/puzzle/${source}`;
     const response = yield axios_1.default.get(typeof id === 'string' ? `${apiUrl}?id=${id}` : apiUrl);
     console.log(response);
     return response.data;
 });
+/**
+ * Generate a directory to hold the problem file and solution file.
+ *
+ * @returns {string} the directory name
+ */
 const createDir = () => {
     const today = new Date();
     const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
@@ -88,6 +173,13 @@ const createDir = () => {
     }
     return dirName;
 };
+/**
+ * Create both the problem text file and the solution file.
+ *
+ * @param problem
+ * @param source
+ * @param id
+ */
 const createFile = (problem, source, id) => {
     const dirName = createDir();
     // const template = fs.readFileSync(`./template.md`).toString();
@@ -107,10 +199,10 @@ const createFile = (problem, source, id) => {
         // Render template with Mustache
         const output = mustache_1.render(constants_1.TEMPLATE, data);
         fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.md`, output);
-        fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.py`, constants_1.PYTHON);
+        fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.${constants_1.LANGUAGES.python[0]}`, constants_1.LANGUAGES.python[1]);
     }
     else {
-        // vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
+        vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
     }
 };
 exports.deactivate = () => { };
