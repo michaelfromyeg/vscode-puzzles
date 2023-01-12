@@ -30,7 +30,7 @@
   "dependencies": {
     "axios": "^0.21.2",
     "beautiful-dom": "^1.0.9",
-    "fastify": "^3.17.0",
+    "fastify": "^3.29.4",
     "turndown": "^7.0.0"
   },
   "devDependencies": {
