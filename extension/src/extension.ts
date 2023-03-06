@@ -43,7 +43,7 @@ const redditHandler = async () => {
     console.error(`Error: ${e}`);
     vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
   }
-}
+};
 
 /**
  * Call generateProblem for ProjectEuler, with an optional project ID.
@@ -61,7 +61,7 @@ const projectEulerHandler = async () => {
     console.error(`Error: ${e}`);
     vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
   }
-}
+};
 
 /**
  * Call generateProblem for codingBat, without any additional arguments.
@@ -74,7 +74,7 @@ const codingBatHandler = async () => {
 			console.error(`Error: ${e}`);
 			vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
 		}
-}
+};
 
 /**
  * Create an advent of code problem for a specified year and date.
@@ -88,7 +88,7 @@ const adventOfCodeHandler = async () => {
     let yearInput: string | undefined | number = await vscode.window.showInputBox({
       prompt: 'Enter a year from 2015 to the current year, or leave blank to select the current year.',
     });
-    if (yearInput === '' || yearInput === undefined) { yearInput = (new Date()).getFullYear()}
+    if (yearInput === '' || yearInput === undefined) { yearInput = (new Date()).getFullYear();}
 
     // Get the day input from a user; TODO refactor to template
     let dayInput: string | undefined | number = await vscode.window.showInputBox({
@@ -118,7 +118,7 @@ const adventOfCodeHandler = async () => {
     console.error(`Error: ${e}`);
     vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
   }
-}
+};
 
 /**
  * Create a problem instance by first calling the backend API and then generating the needed files.

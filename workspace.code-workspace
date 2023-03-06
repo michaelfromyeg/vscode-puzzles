@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "Documentation",
+      "path": "docs"
+    },
+    {
+      "name": "Extension",
+      "path": "extension"
+    },
+    {
+      "name": "Server",
+      "path": "server",
+    }
+  ],
+  "settings": {
+    "window.zoomLevel": 1,
+    "files.autoSave": "afterDelay"
+  }
+}

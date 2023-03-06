@@ -1,7 +1,11 @@
-# Custom
-dist/
+### Custom
 
-# Node.gitignore
+data/certbot/**
+!data/certbot/.gitkeep
+dist/
+*.pem
+
+### Node.gitignore
 
 # Logs
 logs
