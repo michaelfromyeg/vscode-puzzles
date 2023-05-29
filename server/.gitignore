@@ -1,7 +1,9 @@
-# Custom
-dist/
+### Custom
 
-# Node.gitignore
+dist/
+*.pem
+
+### Node.gitignore
 
 # Logs
 logs
