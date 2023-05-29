@@ -7,3 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 
 - Initial release
+
+## v1.0.2
+
+- Update server URL to new deployment on Railway; the API is now accessible at [this](https://puzzles.michaeldemar.co) URL
