@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+
+# Development-related files
+
+.env.example
+.nvmrc
+.gitignore
+
+nodemon.json
+README.md
+
+scripts/*

@@ -32,6 +32,10 @@
         "title": "Puzzles: Project Euler"
       },
       {
+        "command": "extsn.getAdventOfCode",
+        "title": "Puzzles: Advent Of Code"
+      },
+      {
         "command": "extsn.getCodingBat",
         "title": "Puzzles: Coding Bat"
       }

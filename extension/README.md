@@ -2,7 +2,7 @@
 
 <h3 style="text-align: center"><i>Puzzles</i> allows you to sharpen your coding skills inside of <i>your tailored Visual Studio Code environment</i> and add <i>your own tests</i>.</h3><br />
 
-Solve problems from Reddit's [r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), and [CodingBat](https://codingbat.com/java) in a fully-featured IDE, rather than a ```<textarea />``` (ugh), and write custom test cases, akin to a real job interview... which is the  whole point of your practice anyway!
+Solve problems from Reddit's [r/dailyprogrammer](https://reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), and [CodingBat](https://codingbat.com/java) in a fully-featured IDE, rather than a ```<textarea />``` (ugh), and write custom test cases, akin to a real job interview... which is the  whole point of your practice anyway!
 
 Use Puzzles to **prepare for technical interviews** and start **solving coding problems** like you would in actual interviews today!
 

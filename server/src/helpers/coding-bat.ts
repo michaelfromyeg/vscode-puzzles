@@ -8,7 +8,7 @@ interface PuzzleResponse {
 }
 
 const validId = async (id: string): Promise<boolean> => {
-  // TODO: determine whether or not a given ID is potentially a Reddit post ID
+  // TODO: determine whether or not a given ID is potentially a Coding Bat ID
   return true;
 }
 

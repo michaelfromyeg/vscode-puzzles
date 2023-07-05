@@ -8,6 +8,7 @@
     "dev:nodemon": "nodemon --config nodemon.json src/server.ts",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk src/server.ts",
     "build": "tsc -p tsconfig.json",
+    "prestart": "npm run build",
     "start": "node dist/server.js",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
   },

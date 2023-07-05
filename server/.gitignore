@@ -1,5 +1,7 @@
 ### Custom
 
+data/certbot/**
+!data/certbot/.gitkeep
 dist/
 *.pem
 
