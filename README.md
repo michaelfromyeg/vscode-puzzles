@@ -6,12 +6,10 @@ Solve problems from Reddit's [r/dailyprogrammer](https://www.reddit.com/r/dailyp
 
 Use Puzzles to **prepare for technical interviews** and start **solving coding problems** like you would in actual interviews today!
 
-<br />
 <h3 style="text-align: center">See how quickly you can get coding!</h3>
 <p style="text-align: center">
     <img alt="Puzzles demo" src="https://github.com/michaelfromyeg/puzzles/blob/main/puzzles.gif?raw=true" width="700px" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
 </p>
-<br />
 
 _Want to practice LeetCode specifically?_ Check out [this](https://marketplace.visualstudio.com/items?itemName=LeetCode.vscode-leetcode) extension instead! It should be what you're after... though Puzzles likely can help you as well!
 
