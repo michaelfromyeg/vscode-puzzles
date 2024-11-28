@@ -1,8 +1,7 @@
-import TurndownService from 'turndown'
+import { NodeHtmlMarkdown } from "node-html-markdown";
 
-const turndownService = new TurndownService()
+const nhm = new NodeHtmlMarkdown();
 
-export const render = (html: string): string => {
-  // TODO: add additional rendering logic here, as needed
-  return turndownService.turndown(html)
-}
+export const render = (html: string | undefined): string => {
+  return nhm.translate(html || "");
+};

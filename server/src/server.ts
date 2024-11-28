@@ -1,17 +1,11 @@
-import fastify, { RouteShorthandOptions } from 'fastify'
+import cors from "@fastify/cors";
+import Fastify from "fastify";
 
-import * as reddit from './helpers/reddit'
-import * as codingBat from './helpers/coding-bat'
-import * as projectEuler from './helpers/project-euler'
-import * as parse from './helpers/parse'
-
-const server = fastify({ logger: true })
-
-server.get('/health', async (request, reply) => {
-  reply.code(200).send({
-    status: 'up',
-  })
-})
+import * as adventOfCode from "./helpers/advent-of-code.js";
+import * as codingBat from "./helpers/coding-bat.js";
+import * as parse from "./helpers/parse.js";
+import * as projectEuler from "./helpers/project-euler.js";
+import * as reddit from "./helpers/reddit.js";
 
 interface PuzzleQuerystring {
   id?: string;
@@ -27,49 +21,91 @@ interface PuzzleResponse {
   problem: string;
 }
 
-const opts: RouteShorthandOptions = {}
+export const buildServer = async () => {
+  const fastify = Fastify({
+    logger: true,
+  });
 
-server.get<{ Querystring: PuzzleQuerystring, Params: PuzzleParams }>('/puzzle/:kind', opts, async (request, reply) => {
-  // Log the request
-  server.log
-    .child({ ...request.params, ...request.query })
-    .info('Fetching puzzle!')
+  await fastify.register(cors, {
+    // TODO(michaelfromyeg): restrict if production
+    origin: true,
+  });
 
-  // Fetch the problem
-  let response: PuzzleResponse;
-  switch (request.params.kind) {
-    case 'reddit':
-      response = await reddit.getQuestion(request.query.id)
-      break;
-    case 'projectEuler':
-      response = await projectEuler.getQuestion(request.query.id)
-      break;
-    case 'codingBat':
-      response = await codingBat.getQuestion(request.query.id)
-      break;
-    default:
-      response = { status: 400, id: 'unknown', problem: '' }
-      reply.code(400).send(`${request.params.kind} is not a valid problem type`)
-  }
+  fastify.get("/health", async (request, reply) => {
+    return { status: "up" };
+  });
 
-  if (!response || !response.problem || response.problem === '') {
-    server.log
-      .child({ ...request.params, ...request.query })
-      .warn('Did not get any data for request')
+  fastify.get<{
+    Querystring: PuzzleQuerystring;
+    Params: PuzzleParams;
+  }>("/puzzle/:kind", async (request, reply) => {
+    const { kind } = request.params;
+    const { id } = request.query;
 
-    reply.code(404).send('The problem you tried to fetch does not exist, may have been deleted, or an error may have occurred.')
-  }
+    request.log.info({ kind, id }, "Fetching puzzle");
 
-  // Get a more Markdown friendly string
-  const problem = parse.render(response.problem)
+    let response: PuzzleResponse;
+    try {
+      switch (kind) {
+        case "reddit":
+          response = await reddit.getQuestion(id);
+          break;
+        case "projectEuler":
+          response = await projectEuler.getQuestion(id);
+          break;
+        case "codingBat":
+          response = await codingBat.getQuestion(id);
+          break;
+        case "adventOfCode":
+          response = await adventOfCode.getQuestion(id);
+          break;
+        default:
+          return reply
+            .code(400)
+            .send(new Error(`${kind} is not a valid problem type`));
+      }
 
-  reply.code(200).send({ source: request.params.kind, id: response.id, problem })
-})
+      if (!response?.problem || response.problem === "") {
+        request.log.warn({ kind, id }, "No data received for request");
+        return reply
+          .code(404)
+          .send(new Error("Problem not found or may have been deleted"));
+      }
 
-server.listen(process.env.PORT || 8000, '0.0.0.0', (err, address) => {
-  if (err) {
-    console.error(err)
-    process.exit(1)
-  }
-  console.log(`Server listening at ${address}`)
-})
+      const problem = parse.render(response.problem);
+
+      return {
+        source: kind,
+        id: response.id,
+        problem,
+      };
+    } catch (err) {
+      request.log.error({ err, kind, id }, "Error processing puzzle request");
+      return reply
+        .code(500)
+        .send(new Error("An error occurred while processing your request"));
+    }
+  });
+
+  return fastify;
+};
+
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
+  const start = async () => {
+    try {
+      const app = await buildServer();
+      const port = parseInt(process.env.PORT || "8000", 10);
+      const host = process.env.HOST || "0.0.0.0";
+
+      await app.listen({ port, host });
+      console.log(`Server listening at ${host}:${port}`);
+    } catch (err) {
+      console.error(err);
+      process.exit(1);
+    }
+  };
+
+  start();
+}

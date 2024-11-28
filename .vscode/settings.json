@@ -1,0 +1,20 @@
+{
+  "files.insertFinalNewline": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "{workspaceFolder}/extension/out": false
+  },
+  "files.associations": {
+    "*.env.example": "dotenv"
+  },
+  "search.exclude": {
+    "{workspaceFolder}/extension/out": true
+  },
+  "typescript.tsc.autoDetect": "off",
+  "git.ignoreLimitWarning": true
+}

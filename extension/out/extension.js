@@ -1,117 +1,85 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deactivate = exports.activate = void 0;
-const vscode = require("vscode");
-const axios_1 = require("axios");
-const fs = require("fs");
-const path = require("path");
-const mustache_1 = require("mustache");
-const constants_1 = require("./constants");
-// TODO: get this working
-// import * as template from "./template.md"
-exports.activate = (context) => {
-    console.log("Puzzles is now active!");
-    const reddit = vscode.commands.registerCommand('extsn.getReddit', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield generateProblem("reddit", undefined);
-            vscode.window.showInformationMessage("Problem created! Get to solving.");
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
-        }
-    }));
-    const projectEuler = vscode.commands.registerCommand('extsn.getProjectEuler', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const input = yield vscode.window.showInputBox({
-                // title: 'Problem ID',
-                prompt: 'Enter a problem ID (a number from 1 to 784) or leave empty for a random problem.'
-            });
-            yield generateProblem("projectEuler", input);
-            vscode.window.showInformationMessage("Problem created! Get to solving.");
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
-        }
-    }));
-    const codingBat = vscode.commands.registerCommand('extsn.getCodingBat', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield generateProblem("codingBat", undefined);
-            vscode.window.showInformationMessage("Problem created! Get to solving.");
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-            vscode.window.showInformationMessage("Sorry, there was an error in creating your problem today :/");
-        }
-    }));
-    // Register functions
-    context.subscriptions.push(reddit, projectEuler, codingBat);
-};
-const generateProblem = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield textFromSource(source, id);
-    createFile(data.problem, source, data.id);
-});
-const textFromSource = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
-    const apiUrl = `${constants_1.BASE_URL}/puzzle/${source}`;
-    const response = yield axios_1.default.get(typeof id === 'string' ? `${apiUrl}?id=${id}` : apiUrl);
-    console.log(response);
-    return response.data;
-});
-const createDir = () => {
-    const today = new Date();
-    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
-    const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(today);
-    const dirName = `${day}-${month}-${year}`;
-    if (vscode.workspace.workspaceFolders) {
-        const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        console.log('path', vscodePath);
-        const normalizedPath = path.normalize(vscodePath);
-        try {
-            fs.mkdir(`${normalizedPath}/${dirName}`, (err) => console.error(err));
-        }
-        catch (e) {
-            console.error(`Error: ${e}`);
-        }
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-    else {
-        vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
-    }
-    return dirName;
-};
-const createFile = (problem, source, id) => {
-    const dirName = createDir();
-    // const template = fs.readFileSync(`./template.md`).toString();
-    const data = {
-        title: "Today's Puzzle",
-        date: new Date().toLocaleDateString(),
-        source,
-        id,
-        // url,
-        problem,
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
     };
-    const fileNameExtension = source.toLowerCase();
-    if (vscode.workspace.workspaceFolders) {
-        const vscodePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        console.log('path', vscodePath);
-        const normalizedPath = path.normalize(vscodePath);
-        // Render template with Mustache
-        const output = mustache_1.render(constants_1.TEMPLATE, data);
-        fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.md`, output);
-        fs.writeFileSync(`${normalizedPath}/${dirName}/${fileNameExtension}.py`, constants_1.PYTHON);
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.activate = activate;
+exports.deactivate = deactivate;
+const vscode = __importStar(require("vscode"));
+const adventOfCode_1 = require("./commands/adventOfCode");
+const defaultLanguage_1 = require("./commands/defaultLanguage");
+const api_1 = require("./services/api");
+const file_1 = require("./services/file");
+const logger_1 = require("./utils/logger");
+function activate(context) {
+    const logger = logger_1.Logger.getInstance();
+    const apiService = api_1.ApiService.getInstance();
+    const fileService = file_1.FileService.getInstance();
+    logger.info("Puzzles extension is now active!");
+    const commandHandlers = {
+        "extsn.setLanguage": defaultLanguage_1.setDefaultLanguage,
+        "extsn.getReddit": () => handleProblemGeneration("reddit"),
+        "extsn.getProjectEuler": async () => {
+            const id = await vscode.window.showInputBox({
+                prompt: "Enter a problem ID (1-784) or leave empty for random",
+            });
+            await handleProblemGeneration("projectEuler", id);
+        },
+        "extsn.getCodingBat": () => handleProblemGeneration("codingBat"),
+        "extsn.getAdventOfCode": async () => {
+            const params = await (0, adventOfCode_1.getAdventOfCodeProblem)();
+            if (params) {
+                await handleProblemGeneration("adventOfCode", `${params.year}/${params.day}`);
+            }
+        },
+    };
+    async function handleProblemGeneration(source, id) {
+        try {
+            const problem = await apiService.fetchProblem(source, id);
+            await fileService.createProblemFiles(problem);
+            vscode.window.showInformationMessage("Problem created! Get to solving.");
+        }
+        catch (error) {
+            logger.error("Failed to generate problem", error);
+            vscode.window.showErrorMessage("Failed to create problem. Check output for details.");
+        }
     }
-    else {
-        // vscode.window.showInformationMessage("Open a folder first to generate your problem in!");
-    }
-};
-exports.deactivate = () => { };
+    // Register commands
+    Object.entries(commandHandlers).forEach(([command, handler]) => {
+        context.subscriptions.push(vscode.commands.registerCommand(command, handler));
+    });
+}
+function deactivate() {
+    logger_1.Logger.getInstance().info("Puzzles extension is now deactivated!");
+}
 //# sourceMappingURL=extension.js.map

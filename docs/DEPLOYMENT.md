@@ -8,7 +8,7 @@ From `extension`,
 
 1. Run `npm install -g @vscode/vsce`
 2. Get a personal access token, following [this](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) guide
-   1. The account is under "mdemarco88 \[at\] outlook \[dot\] com" (TODO: migrate to personal email)
+    - The account is under "mdemarco88 \[at\] outlook \[dot\] com" (TODO: migrate to personal email)
 3. Run `vsce login michaelfromyeg`; paste the token
 4. Run `vsce publish`
 

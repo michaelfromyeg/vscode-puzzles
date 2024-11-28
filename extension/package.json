@@ -1,11 +1,34 @@
 {
   "name": "vscode-puzzle",
   "displayName": "Puzzles",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "publisher": "michaelfromyeg",
-  "description": "A VSCode extension to work on coding interview problems in your local text editor.",
+  "description": "A VS Code extension to work on coding interview problems in your local text editor.",
+  "scripts": {
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts --fix",
+    "test": "node ./out/test/runTest.js",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
+    "pretest": "npm run test-compile && npm run lint",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "husky install"
+  },
   "categories": [
+    "Education",
+    "Programming Languages",
     "Other"
+  ],
+  "keywords": [
+    "puzzle",
+    "interview",
+    "coding",
+    "practice",
+    "algorithms"
   ],
   "license": "MIT",
   "icon": "images/vscode-puzzle-logo-small.png",
@@ -17,52 +40,98 @@
     "type": "git",
     "url": "https://github.com/michaelfromyeg/vscode-puzzles.git"
   },
+  "bugs": {
+    "url": "https://github.com/michaelfromyeg/vscode-puzzles/issues"
+  },
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.75.0",
+    "node": "^22.0.0"
   },
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Puzzles",
+      "properties": {
+        "puzzles.defaultLanguage": {
+          "type": "string",
+          "enum": [
+            "python",
+            "javascript",
+            "typescript",
+            "java",
+            "cpp"
+          ],
+          "default": "python",
+          "description": "Default programming language for puzzle solutions"
+        },
+        "puzzles.templateFormat": {
+          "type": "string",
+          "enum": [
+            "markdown",
+            "text"
+          ],
+          "default": "markdown",
+          "description": "Format for problem description files"
+        }
+      }
+    },
     "commands": [
       {
+        "command": "extsn.setLanguage",
+        "title": "Set Default Language",
+        "category": "Puzzles"
+      },
+      {
         "command": "extsn.getReddit",
-        "title": "Puzzles: r/dailyprogrammer"
+        "title": "r/dailyprogrammer",
+        "category": "Puzzles"
       },
       {
         "command": "extsn.getProjectEuler",
-        "title": "Puzzles: Project Euler"
+        "title": "Project Euler",
+        "category": "Puzzles"
       },
       {
         "command": "extsn.getCodingBat",
-        "title": "Puzzles: Coding Bat"
+        "title": "Coding Bat",
+        "category": "Puzzles"
+      },
+      {
+        "command": "extsn.getAdventOfCode",
+        "title": "Advent of Code",
+        "category": "Puzzles"
       }
     ]
   },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "lint": "eslint --fix src --ext ts",
-    "dev": "npm watch",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "test": "node ./out/test/runTest.js"
-  },
   "dependencies": {
-    "axios": "^1.7.4",
-    "html-entities": "^1.3.1",
-    "mustache": "^4.0.1"
+    "axios": "^1.7.8",
+    "html-entities": "^2.5.2",
+    "mustache": "^4.2.0"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/mocha": "^7.0.2",
-    "@types/mustache": "^4.0.1",
-    "@types/node": "^13.11.0",
-    "@types/vscode": "^1.46.0",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "eslint": "^6.8.0",
-    "glob": "^7.1.6",
-    "mocha": "^10.2.0",
-    "typescript": "^3.8.3",
-    "vscode-test": "^1.3.0"
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.10",
+    "@types/mustache": "^4.2.5",
+    "@types/node": "^22.10.1",
+    "@types/vscode": "^1.95.0",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "glob": "^11.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "mocha": "^10.8.2",
+    "prettier": "^3.4.1",
+    "typescript": "^5.7.2",
+    "vscode-test": "^1.6.1"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
