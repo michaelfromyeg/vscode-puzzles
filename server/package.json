@@ -1,15 +1,18 @@
 {
   "name": "puzzles-server",
   "version": "1.0.0",
-  "description": "Backend for the Puzzles extesion",
+  "description": "Server for the vscode-puzzles extension.",
   "main": "dist/server.js",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
-    "dev": "ts-node-dev src/server.ts",
-    "dev:nodemon": "nodemon --config nodemon.json src/server.ts",
-    "dev:debug": "nodemon --config nodemon.json --inspect-brk src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/server.js",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
+    "start": "node --enable-source-maps dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -28,21 +31,18 @@
   },
   "homepage": "https://github.com/michaelfromyeg/vscode-puzzles#readme",
   "dependencies": {
-    "axios": "^0.21.2",
-    "beautiful-dom": "^1.0.9",
-    "fastify": "^5.0.0",
-    "turndown": "^7.0.0"
+    "@fastify/cors": "^10.0.1",
+    "axios": "^1.7.8",
+    "cheerio": "^1.0.0",
+    "fastify": "^5.1.0",
+    "he": "^1.2.0",
+    "node-html-markdown": "^1.3.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.18",
-    "@types/mocha": "^8.2.2",
-    "@types/node": "^15.6.1",
-    "@types/turndown": "^5.0.0",
-    "chai": "^4.3.4",
-    "mocha": "^10.1.0",
-    "nodemon": "^2.0.20",
-    "ts-node": "^10.0.0",
-    "ts-node-dev": "^1.1.6",
-    "typescript": "^4.3.2"
+    "@types/he": "^1.2.3",
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
   }
 }

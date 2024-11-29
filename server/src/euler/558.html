@@ -1,0 +1,20 @@
+<p>Let $r$ be the real root of the equation $x^3 = x^2 + 1$.<br>
+Every positive integer can be written as the sum of distinct increasing powers of $r$.<br>
+If we require the number of terms to be finite and the difference between any two exponents to be three or more, then the representation is unique.<br>
+For example, $3 = r^{-10} + r^{-5} + r^{-1} + r^2$ and $10 = r^{-10} + r^{-7} + r^6$.<br>
+Interestingly, the relation holds for the complex roots of the equation.</p>
+
+<p>Let $w(n)$ be the number of terms in this unique representation of $n$. Thus $w(3) = 4$ and $w(10) = 3$.</p>
+
+<p>More formally, for all positive integers $n$, we have:<br>
+$n = \displaystyle \sum_{k=-\infty}^\infty b_k r^k$<br>
+under the conditions that:<br>
+$b_k$ is $0$ or $1$ for all $k$;<br>
+$b_k + b_{k + 1} + b_{k + 2} \le 1$ for all $k$;<br>
+$w(n) = \displaystyle \sum_{k=-\infty}^\infty b_k$ is finite.</p>
+
+<p>Let $S(m) = \displaystyle \sum_{j=1}^m w(j^2)$.<br>
+You are given $S(10) = 61$ and $S(1000) = 19403$.</p>
+
+<p>Find $S(5\,000\,000)$.</p>
+

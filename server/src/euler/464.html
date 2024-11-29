@@ -1,0 +1,23 @@
+<p>
+The <strong>Möbius function</strong>, denoted $\mu(n)$, is defined as:
+</p><ul><li>$\mu(n) = (-1)^{\omega(n)}$ if $n$ is squarefree (where $\omega(n)$ is the number of distinct prime factors of $n$)</li>
+<li>$\mu(n) = 0$ if $n$ is not squarefree.</li>
+</ul><p>
+Let $P(a, b)$ be the number of integers $n$ in the interval $[a, b]$ such that $\mu(n) = 1$.<br>
+Let $N(a, b)$ be the number of integers $n$ in the interval $[a, b]$ such that $\mu(n) = -1$.<br>
+For example, $P(2,10) = 2$ and $N(2,10) = 4$.
+</p>
+
+<p>
+Let $C(n)$ be the number of integer pairs $(a, b)$ such that:
+</p><ul><li> $1\le a \le b \le n$,</li>
+<li> $99 \cdot N(a, b) \le 100 \cdot P(a, b)$, and</li>
+<li> $99 \cdot P(a, b) \le 100 \cdot N(a, b)$.</li>
+</ul><p>
+For example, $C(10) = 13$, $C(500) = 16676$ and $C(10\,000) = 20155319$.
+</p>
+
+<p>
+Find $C(20\,000\,000)$.
+</p>
+

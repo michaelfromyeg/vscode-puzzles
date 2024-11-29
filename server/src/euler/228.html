@@ -1,0 +1,18 @@
+<p>Let $S_n$ be the regular $n$-sided polygon – or <dfn>shape</dfn> – whose vertices 
+
+$v_k$ ($k = 1, 2, \dots, n$) have coordinates:</p>
+\begin{align}
+x_k &amp;= \cos((2k - 1)/n \times 180^\circ)\\
+y_k &amp;= \sin((2k - 1)/n \times 180^\circ)
+\end{align}
+
+<p>Each $S_n$ is to be interpreted as a filled shape consisting of all points on the perimeter and in the interior.</p>
+
+<p>The <strong>Minkowski sum</strong>, $S + T$, of two shapes $S$ and $T$ is the result of adding every point in $S$ to every point in $T$, where point addition is performed coordinate-wise: $(u, v) + (x, y) = (u + x, v + y)$.</p>
+
+<p>For example, the sum of $S_3$ and $S_4$ is the six-sided shape shown in pink below:</p>
+
+<div class="center">
+<img src="resources/images/0228.png?1678992052" class="dark_img" alt="picture showing S_3 + S_4"></div>
+
+<p>How many sides does $S_{1864} + S_{1865} + \cdots + S_{1909}$ have?</p>

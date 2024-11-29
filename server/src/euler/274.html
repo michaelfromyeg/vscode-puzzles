@@ -1,0 +1,14 @@
+<p>For each integer $p \gt 1$ coprime to $10$ there is a positive <dfn>divisibility multiplier</dfn> $m \lt p$ which preserves divisibility by $p$ for the following function on any positive integer, $n$:</p>
+
+<p>$f(n) = (\text{all but the last digit of }n) + (\text{the last digit of }n) \cdot m$.</p>
+
+<p>That is, if $m$ is the divisibility multiplier for $p$, then $f(n)$ is divisible by $p$ if and only if $n$ is divisible by $p$.</p>
+
+<p>(When $n$ is much larger than $p$, $f(n)$ will be less than $n$ and repeated application of $f$ provides a multiplicative divisibility test for $p$.)</p>
+
+<p>For example, the divisibility multiplier for $113$ is $34$.</p>
+
+<p>$f(76275) = 7627 + 5 \cdot 34 = 7797$: $76275$ and $7797$ are both divisible by $113$.<br>$f(12345) = 1234 + 5 \cdot 34 = 1404$: $12345$ and $1404$ are both not divisible by $113$.</p>
+
+<p>The sum of the divisibility multipliers for the primes that are coprime to $10$ and less than $1000$ is $39517$. What is the sum of the divisibility multipliers for the primes that are coprime to $10$ and less than $10^7$?</p>
+

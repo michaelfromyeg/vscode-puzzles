@@ -1,0 +1,22 @@
+<p>Alice and Bob have enjoyed playing <strong>Nim</strong> every day. However, they finally got bored of playing ordinary three-heap Nim.<br>
+So, they added an extra rule:</p>
+
+<p>- Must not make two heaps of the same size.</p>
+
+<p>The triple $(a, b, c)$ indicates the size of three heaps.<br>
+Under this extra rule, $(2,4,5)$ is one of the losing positions for the next player.</p>
+
+<p>To illustrate:<br>
+- Alice moves to $(2,4,3)$<br>
+- Bob   moves to $(0,4,3)$<br>
+- Alice moves to $(0,2,3)$<br>
+- Bob   moves to $(0,2,1)$</p>
+
+<p>Unlike ordinary three-heap Nim, $(0,1,2)$ and its permutations are the end states of this game.</p>
+
+<p>For an integer $N$, we define $F(N)$ as the sum of $a + b + c$ for all the losing positions for the next player, with $0 \lt a \lt b \lt c \lt N$.</p>
+
+<p>For example, $F(8) = 42$, because there are $4$ losing positions for the next player, $(1,3,5)$, $(1,4,6)$, $(2,3,6)$ and $(2,4,5)$.<br>
+We can also verify that $F(128) = 496062$.</p>
+
+<p>Find the last $9$ digits of $F(10^{18})$.</p>

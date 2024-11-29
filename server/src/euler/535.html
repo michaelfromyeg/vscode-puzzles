@@ -1,0 +1,15 @@
+<p>Consider the infinite integer sequence S starting with:<br>
+$S = 1, 1, 2, 1, 3, 2, 4, 1, 5, 3, 6, 2, 7, 8, 4, 9, 1, 10, 11, 5, \dots$</p>
+
+<p>Circle the first occurrence of each integer.<br>
+$S = \enclose{circle}1, 1, \enclose{circle}2, 1, \enclose{circle}3, 2, \enclose{circle}4, 1, \enclose{circle}5, 3, \enclose{circle}6, 2, \enclose{circle}7, \enclose{circle}8, 4, \enclose{circle}9, 1, \enclose{circle}{10}, \enclose{circle}{11}, 5, \dots$</p>
+
+<p>The sequence is characterized by the following properties:</p>
+<ul><li>The circled numbers are consecutive integers starting with $1$.</li>
+<li>Immediately preceding each non-circled numbers $a_i$, there are exactly $\lfloor \sqrt{a_i} \rfloor$ adjacent circled numbers, where $\lfloor\,\rfloor$ is the floor function.</li>
+<li>If we remove all circled numbers, the remaining numbers form a sequence identical to $S$, so $S$ is a <strong>fractal sequence</strong>.</li></ul>
+
+<p>Let $T(n)$ be the sum of the first $n$ elements of the sequence.<br>
+You are given $T(1) = 1$, $T(20) = 86$, $T(10^3) = 364089$ and $T(10^9) = 498676527978348241$.</p>
+
+<p>Find $T(10^{18})$. Give the last $9$ digits of your answer.</p>
