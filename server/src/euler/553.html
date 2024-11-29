@@ -1,0 +1,22 @@
+<p>Let $P(n)$ be the set of the first $n$ positive integers $\{1, 2, \dots, n\}$.<br>
+Let $Q(n)$ be the set of all the non-empty subsets of $P(n)$.<br>
+Let $R(n)$ be the set of all the non-empty subsets of $Q(n)$.</p>
+
+<p>An element $X \in R(n)$ is a non-empty subset of $Q(n)$, so it is itself a set.<br>
+From $X$ we can construct a graph as follows:</p>
+
+<ul>
+<li>Each element $Y \in X$ corresponds to a vertex and labeled with $Y$;</li>
+<li>Two vertices $Y_1$ and $Y_2$ are connected if $Y_1 \cap Y_2 \ne \emptyset$.</li>
+</ul>
+
+<p>For example, $X = \{\{1\},\{1,2,3\},\{3\},\{5,6\},\{6,7\}\}$ results in the following graph:</p>
+
+<div align="center"><img src="resources/images/0553-power-sets.gif?1678992057" alt="0553-power-sets.gif"></div>
+
+<p>This graph has two <strong>connected components</strong>.</p>
+
+<p>Let $C(n, k)$ be the number of elements of $R(n)$ that have exactly $k$ connected components in their graph.<br>
+You are given $C(2, 1) = 6$, $C(3, 1) = 111$, $C(4, 2) = 486$, $C(100, 10) \bmod 1\,000\,000\,007 = 728209718$.</p>
+
+<p>Find $C(10^4, 10) \bmod 1\,000\,000\,007$.</p>

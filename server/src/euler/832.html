@@ -1,0 +1,19 @@
+<p>
+In this problem $\oplus$ is used to represent the bitwise <strong>exclusive or</strong> of two numbers.<br />
+Starting with blank paper repeatedly do the following:</p>
+
+<ol type="1">
+<li>Write down the smallest positive integer $a$ which is currently not on the paper;</li>
+
+<li>Find the smallest positive integer $b$ such that neither $b$ nor $(a \oplus b)$ is currently on the paper. Then write down both $b$ and <span style="white-space:nowrap;">$(a \oplus b)$.</span></li>
+</ol>
+
+<p>
+After the first round $\{1,2,3\}$ will be written on the paper. In the second round $a=4$ and because <span style="white-space:nowrap;">$(4 \oplus 5)$,</span> $(4 \oplus 6)$ and $(4 \oplus 7)$ are all already written $b$ must be <span style="white-space:nowrap;">$8$.</span></p>
+
+<p>
+After $n$ rounds there will be $3n$ numbers on the paper. Their sum is denoted by <span style="white-space:nowrap;">$M(n)$.</span><br />
+For example, $M(10) = 642$ and <span style="white-space:nowrap;">$M(1000) = 5432148$.</span></p>
+
+<p>
+Find <span style="white-space:nowrap;">$M(10^{18})$.</span> Give your answer modulo <span style="white-space:nowrap;">$1\,000\,000\,007$.</span></p>

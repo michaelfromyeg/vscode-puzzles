@@ -1,0 +1,31 @@
+<p>There are $n$ stones in a pond, numbered $1$ to $n$. Consecutive stones are spaced one unit apart.</p>
+
+<p>A frog sits on stone $1$. He wishes to visit each stone exactly once, stopping on stone $n$. However, he can only jump from one stone to another if they are at most $3$ units apart. In other words, from stone $i$, he can reach a stone $j$ if $1 \le j \le n$ and $j$ is in the set $\{i-3, i-2, i-1, i+1, i+2, i+3\}$.</p>
+
+<p>Let $f(n)$ be the number of ways he can do this. For example, $f(6) = 14$, as shown below:<br>
+$1 \to 2 \to 3 \to 4 \to 5 \to 6$ <br>
+$1 \to 2 \to 3 \to 5 \to 4 \to 6$ <br>
+$1 \to 2 \to 4 \to 3 \to 5 \to 6$ <br>
+$1 \to 2 \to 4 \to 5 \to 3 \to 6$ <br>
+$1 \to 2 \to 5 \to 3 \to 4 \to 6$ <br>
+$1 \to 2 \to 5 \to 4 \to 3 \to 6$ <br>
+$1 \to 3 \to 2 \to 4 \to 5 \to 6$ <br>
+$1 \to 3 \to 2 \to 5 \to 4 \to 6$ <br>
+$1 \to 3 \to 4 \to 2 \to 5 \to 6$ <br>
+$1 \to 3 \to 5 \to 2 \to 4 \to 6$ <br>
+$1 \to 4 \to 2 \to 3 \to 5 \to 6$ <br>
+$1 \to 4 \to 2 \to 5 \to 3 \to 6$ <br>
+$1 \to 4 \to 3 \to 2 \to 5 \to 6$ <br>
+$1 \to 4 \to 5 \to 2 \to 3 \to 6$</p>
+
+<p>Other examples are $f(10) = 254$ and $f(40) = 1439682432976$.</p>
+
+<p>Let $S(L) = \sum f(n)^3$ for $1 \le n \le L$.<br>
+Examples:<br>
+$S(10) = 18230635$<br>
+$S(20) = 104207881192114219$<br>
+$S(1\,000) \bmod 10^9 = 225031475$<br>
+$S(1\,000\,000) \bmod 10^9 = 363486179$</p>
+
+<p>Find $S(10^{14}) \bmod 10^9$.</p>
+

@@ -1,0 +1,22 @@
+<p>
+When we calculate $8^n$ modulo $11$ for $n=0$ to $9$ we get: $1, 8, 9, 6, 4, 10, 3, 2, 5, 7$.<br>
+As we see all possible values from $1$ to $10$ occur. So $8$ is a <strong>primitive root</strong> of $11$.<br>
+But there is more:<br>
+If we take a closer look we see:<br>
+$1+8=9$<br>
+$8+9=17 \equiv 6 \bmod 11$<br>
+$9+6=15 \equiv 4 \bmod 11$<br>
+$6+4=10$<br>
+$4+10=14 \equiv 3 \bmod 11$<br>
+$10+3=13 \equiv 2 \bmod 11$<br>
+$3+2=5$<br>
+$2+5=7$<br>
+$5+7=12 \equiv 1 \bmod 11$.
+</p>
+So the powers of $8 \bmod 11$ are cyclic with period $10$, and $8^n + 8^{n+1} \equiv 8^{n+2} \pmod{11}$.<br>
+$8$ is called a <strong>Fibonacci primitive root</strong> of $11$.<br>
+Not every prime has a Fibonacci primitive root.<br>
+There are $323$ primes less than $10000$ with one or more Fibonacci primitive roots and the sum of these primes is $1480491$.<br>
+Find the sum of the primes less than $100\,000\,000$ with at least one Fibonacci primitive root.
+
+

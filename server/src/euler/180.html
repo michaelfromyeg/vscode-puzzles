@@ -1,0 +1,14 @@
+<p>For any integer $n$, consider the three functions</p>
+\begin{align}
+f_{1, n}(x, y, z) &amp;= x^{n + 1} + y^{n + 1} - z^{n + 1}\\
+f_{2, n}(x, y, z) &amp;= (xy + yz + zx) \cdot (x^{n - 1} + y^{n - 1} - z^{n - 1})\\
+f_{3, n}(x, y, z) &amp;= xyz \cdot (x^{n - 2} + y^{n - 2} - z^{n - 2})
+\end{align}
+
+<p>and their combination
+$$f_n(x, y, z) = f_{1, n}(x, y, z) + f_{2, n}(x, y, z) - f_{3, n}(x, y, z).$$</p>
+
+<p>We call $(x, y, z)$ a golden triple of order $k$ if $x$, $y$, and $z$ are all rational numbers of the form $a / b$ with $0 \lt a \lt b \le k$ and there is (at least) one integer $n$, so that $f_n(x, y, z) = 0$.</p>
+<p>Let $s(x, y, z) = x + y + z$.<br>
+Let $t = u / v$ be the sum of all distinct $s(x, y, z)$ for all golden triples $(x, y, z)$ of order $35$.<br> All the $s(x, y, z)$ and $t$ must be in reduced form.</p>
+<p>Find $u + v$.</p>

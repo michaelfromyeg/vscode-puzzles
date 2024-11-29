@@ -1,0 +1,18 @@
+<p>Let $n$ be a positive integer.<br>
+A 6-sided die is thrown $n$ times. Let $c$ be the number of pairs of consecutive throws that give the same value.</p>
+
+<p>For example, if $n = 7$ and the values of the die throws are (1,1,5,6,6,6,3), then the following pairs of consecutive throws give the same value:<br>
+(<u>1,1</u>,5,6,6,6,3)<br>
+(1,1,5,<u>6,6</u>,6,3)<br>
+(1,1,5,6,<u>6,6</u>,3)<br>
+Therefore, $c = 3$ for (1,1,5,6,6,6,3).</p>
+
+<p>Define $C(n)$ as the number of outcomes of throwing a 6-sided die $n$ times such that $c$ does not exceed $\pi(n)$.<sup>1</sup><br>
+For example, $C(3) = 216$, $C(4) = 1290$, $C(11) = 361912500$ and $C(24) = 4727547363281250000$.</p>
+
+<p>Define $S(L)$ as $\sum C(n)$ for $1 \leq n \leq L$.<br>
+For example, $S(50) \bmod 1\,000\,000\,007 = 832833871$.</p>
+
+<p>Find $S(50\,000\,000) \bmod 1\,000\,000\,007$.</p>
+
+<p> <span style="font-size:smaller;"><sup>1</sup> $\pi$ denotes the <b>prime-counting function</b>, i.e. $\pi(n)$ is the number of primes $\leq n$.</span></p>

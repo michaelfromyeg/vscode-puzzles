@@ -1,0 +1,7 @@
+<p>Let $d(p, n, 0)$ be the multiplicative inverse of $n$ modulo prime $p$, defined as $n \times d(p, n, 0) = 1 \bmod p$.<br>
+Let $d(p, n, k) = \sum_{i = 1}^n d(p, i, k - 1)$ for $k \ge 1$.<br>
+Let $D(a, b, k) = \sum (d(p, p-1, k) \bmod p)$ for all primes $a \le p \lt a + b$.</p>
+<p>You are given:</p>
+<ul><li>$D(101,1,10) = 45$</li>
+<li>$D(10^3,10^2,10^2) = 8334$</li>
+<li>$D(10^6,10^3,10^3) = 38162302$</li></ul><p>Find $D(10^9,10^5,10^5)$.</p>

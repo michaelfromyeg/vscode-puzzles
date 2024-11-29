@@ -1,5 +1,7 @@
 import Axios, { AxiosResponse } from "axios";
 import * as cheerio from "cheerio";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { PROJECT_EULER_BASE_URL, PROJECT_EULER_MAX } from "./constants.js";
 import { getRandomInt } from "./random.js";
 
@@ -28,6 +30,18 @@ const validId = (id: string): boolean => {
   }
 };
 
+const getLocalQuestion = async (id: number | string): Promise<string> => {
+  try {
+    const filePath = join(process.cwd(), "src", "euler", `${id}.html`);
+    const content = await readFile(filePath, "utf-8");
+    const $ = cheerio.load(content);
+    // Since local files are raw HTML, we just need the text content
+    return content || "";
+  } catch (error) {
+    return "";
+  }
+};
+
 /**
  * Return a random problem from ProjectEuler
  *
@@ -47,6 +61,15 @@ export const getQuestion = async (
 
   const processedId: number | string =
     id === "random" ? getRandomInt(0, PROJECT_EULER_MAX) : id;
+
+  const localProblem = await getLocalQuestion(processedId);
+  if (localProblem) {
+    return {
+      status: 200,
+      id: processedId,
+      problem: localProblem,
+    };
+  }
 
   // Get the HTML text from a random page
   const response: AxiosResponse = await Axios.get(

@@ -1,0 +1,9 @@
+<p>Two players play a game with two piles of stones. They take alternating turns. If there are currently $a$ stones in the first pile and $b$ stones in the second, a turn consists of removing $c\geq 0$ stones from the first pile and $d\geq 0$ from the second in such a way that $ad-bc=\pm1$. The winner is the player who first empties one of the piles.</p>
+
+<p>Note that the game is only playable if the sizes of the two piles are coprime.</p>
+
+<p>A game state $(a, b)$ is a winning position if the next player can guarantee a win with optimal play. Define $H(N)$ to be the number of winning positions $(a, b)$ with $\gcd(a,b)=1$, $a &gt; 0$, $b &gt; 0$ and $a+b \leq N$. Note the order matters, so for example $(2,1)$ and $(1,2)$ are distinct positions.</p>
+
+<p>You are given $H(4)=5$ and $H(100)=2043$.</p>
+
+<p>Find $H(10^9)$.</p>

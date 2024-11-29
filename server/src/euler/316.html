@@ -1,0 +1,15 @@
+<p>Let $p = p_1 p_2 p_3 \cdots$ be an infinite sequence of random digits, selected from $\{0,1,2,3,4,5,6,7,8,9\}$ with equal probability.<br>
+It can be seen that $p$ corresponds to the real number $0.p_1 p_2 p_3 \cdots$ <br>
+It can also be seen that choosing a random real number from the interval $[0,1)$ is equivalent to choosing an infinite sequence of random digits selected from $\{0,1,2,3,4,5,6,7,8,9\}$ with equal probability.</p>
+
+<p>For any positive integer $n$ with $d$ decimal digits, let $k$ be the smallest index such that $p_k, p_{k + 1}, \dots, p_{k + d - 1}$ are the decimal digits of $n$, in the same order.<br>
+Also, let $g(n)$ be the expected value of $k$; it can be proven that $g(n)$ is always finite and, interestingly, always an integer number.</p>
+
+<p>For example, if $n = 535$, then<br>
+for $p = 31415926\mathbf{535}897\cdots$, we get $k = 9$<br>
+for $p = 35528714365004956000049084876408468\mathbf{535}4\cdots$, we get $k = 36$<br>
+etc and we find that $g(535) = 1008$.</p>
+
+<p>Given that $\displaystyle\sum_{n = 2}^{999} g \left(\left\lfloor\frac{10^6} n \right\rfloor\right) = 27280188$, find $\displaystyle\sum_{n = 2}^{999999} g \left(\left\lfloor\frac{10^{16}} n \right\rfloor\right)$.</p>
+
+<u><i>Note</i></u>: $\lfloor x \rfloor$ represents the floor function.

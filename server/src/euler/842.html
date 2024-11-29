@@ -1,0 +1,19 @@
+<p>
+Given $n$ equally spaced points on a circle, we define an <dfn>$n$-star polygon</dfn> as an $n$-gon having those $n$ points as vertices. Two $n$-star polygons differing by a rotation/reflection are considered <b>different</b>.</p>
+
+<p>
+For example, there are twelve $5$-star polygons shown below.</p>
+<img src="resources/images/0842_5-agons.jpg?1680461480" alt="0842_5-agons.jpg">
+<p>
+For an $n$-star polygon $S$, let $I(S)$ be the number of its self intersection points.<br>
+Let $T(n)$ be the sum of $I(S)$ over all $n$-star polygons $S$.<br>
+For the example above $T(5) = 20$ because in total there are $20$ self intersection points.</p>
+
+<p>
+Some star polygons may have intersection points made from more than two lines. These are only counted once. For example, <span style="white-space:nowrap;">$S$,</span> shown below is one of the sixty $6$-star polygons. This one has $I(S) = 4$.</p>
+<img src="resources/images/0842_6-agon.jpg?1680461493" alt="0842_6-agon.jpg">
+<p>
+You are also given that $T(8) = 14640$.</p>
+
+<p>
+Find $\displaystyle \sum_{n = 3}^{60}T(n)$. Give your answer modulo $(10^9 + 7)$.</p>

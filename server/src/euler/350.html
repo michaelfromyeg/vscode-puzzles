@@ -1,0 +1,16 @@
+<p>A <dfn>list of size $n$</dfn> is a sequence of $n$ natural numbers.<br> Examples are $(2,4,6)$, $(2,6,4)$, $(10,6,15,6)$, and $(11)$.
+</p><p>
+The <strong>greatest common divisor</strong>, or $\gcd$, of a list is the largest natural number that divides all entries of the list. <br>Examples: $\gcd(2,6,4) = 2$, $\gcd(10,6,15,6) = 1$ and $\gcd(11) = 11$.
+</p><p>
+The <strong>least common multiple</strong>, or $\operatorname{lcm}$, of a list is the smallest natural number divisible by each entry of the list. <br>Examples: $\operatorname{lcm}(2,6,4) = 12$, $\operatorname{lcm}(10,6,15,6) = 30$ and $\operatorname{lcm}(11) = 11$.
+</p><p>
+Let $f(G, L, N)$ be the number of lists of size $N$ with $\gcd \ge G$ and $\operatorname{lcm} \le L$. For example:
+</p><p>
+$f(10, 100, 1) = 91$.<br>
+$f(10, 100, 2) = 327$.<br>
+$f(10, 100, 3) = 1135$.<br>
+$f(10, 100, 1000) \bmod 101^4 = 3286053$.
+</p><p>
+Find $f(10^6, 10^{12}, 10^{18}) \bmod 101^4$.
+</p>
+

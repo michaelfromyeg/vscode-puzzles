@@ -1,0 +1,28 @@
+<p>You probably know the game <strong>Fifteen Puzzle</strong>. Here, instead of numbered tiles, we have seven red tiles and eight blue tiles.</p>
+<p>A move is denoted by the uppercase initial of the direction (Left, Right, Up, Down) in which the tile is slid, e.g. starting from configuration (<b>S</b>), by the sequence <b>LULUR</b> we reach the configuration (<b>E</b>):</p>
+<p></p><div class="center">
+<table cellspacing="0" cellpadding="2" border="0" align="center"><tr><td width="25">(<b>S</b>)</td><td width="100"><img src="resources/images/0244_start.gif?1678992055?1678992055" class="dark_img" alt="0244_start.gif"></td><td width="25">, (<b>E</b>)</td><td width="100"><img src="resources/images/0244_example.gif?1678992055" class="dark_img" alt="0244_example.gif"></td>
+</tr></table></div>
+
+<p>For each path, its checksum is calculated by (pseudocode):
+</p>
+\begin{align}
+\mathrm{checksum} &amp;= 0\\
+\mathrm{checksum} &amp;= (\mathrm{checksum} \times 243 + m_1) \bmod 100\,000\,007\\
+\mathrm{checksum} &amp;= (\mathrm{checksum} \times 243 + m_2) \bmod 100\,000\,007\\
+\cdots &amp;\\
+\mathrm{checksum} &amp;= (\mathrm{checksum} \times 243 + m_n) \bmod 100\,000\,007
+\end{align}
+where $m_k$ is the ASCII value of the $k$<sup><var>th</var></sup> letter in the move sequence and the ASCII values for the moves are:
+
+<div class="center">
+<table cellspacing="0" cellpadding="2" border="1" align="center"><tr><td width="30"><b>L</b></td><td width="30">76</td></tr><tr><td><b>R</b></td><td>82</td></tr><tr><td><b>U</b></td><td>85</td></tr><tr><td><b>D</b></td><td>68</td></tr></table></div>
+
+<p>For the sequence <b>LULUR</b> given above, the checksum would be $19761398$.</p>
+<p>Now, starting from configuration (<b>S</b>),
+find all shortest ways to reach configuration (<b>T</b>).</p>
+<p></p><div class="center">
+<table cellspacing="0" cellpadding="2" border="0" align="center"><tr><td width="25">(<b>S</b>)</td><td width="100"><img src="resources/images/0244_start.gif?1678992055?1678992055" class="dark_img" alt="0244_start.gif"></td><td width="25">, (<b>T</b>)</td><td width="100"><img src="resources/images/0244_target.gif?1678992055" class="dark_img" alt="0244_target.gif"></td>
+</tr></table></div>
+
+<p>What is the sum of all checksums for the paths having the minimal length?</p>

@@ -1,0 +1,12 @@
+<p>Consider a two dimensional grid of squares. The grid has 4 rows but infinitely many columns.</p>
+<p>An amoeba in square $(x, y)$ can divide itself into two amoebas to occupy the squares $(x+1,y)$ and $(x+1,(y+1) \bmod 4)$, provided these squares are empty.</p>
+
+<p>The following diagrams show two cases of an amoeba placed in square <b>A</b> of each grid. When it divides, it is replaced with two amoebas, one at each of the squares marked with <b>B</b>:</p>
+<div style="text-align:center;">
+<img src="project/images/p762_table_a.png" class="dark_img" alt="" /><img src="project/images/p762_table_b.png" class="dark_img" alt="" /></div>
+
+<p>Originally there is only one amoeba in the square $(0, 0)$. After $N$ divisions there will be $N+1$ amoebas arranged in the grid. An arrangement may be reached in several different ways but it is only counted once. Let $C(N)$ be the number of different possible arrangements after $N$ divisions.</p>
+
+<p>For example, $C(2) = 2$, $C(10) = 1301$, $C(20)=5895236$ and the last nine digits of $C(100)$ are $125923036$.</p>
+
+<p>Find $C(100\,000)$, enter the last nine digits as your answer.</p>
