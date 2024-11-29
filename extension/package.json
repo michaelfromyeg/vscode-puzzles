@@ -1,7 +1,7 @@
 {
   "name": "vscode-puzzle",
   "displayName": "Puzzles",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "michaelfromyeg",
   "description": "A VS Code extension to work on coding interview problems in your local text editor.",
   "scripts": {
@@ -38,13 +38,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/michaelfromyeg/vscode-puzzles.git"
+    "url": "https://github.com/michaelfromorg/vscode-puzzles.git"
   },
   "bugs": {
-    "url": "https://github.com/michaelfromyeg/vscode-puzzles/issues"
+    "url": "https://github.com/michaelfromorg/vscode-puzzles/issues"
   },
   "engines": {
-    "vscode": "^1.75.0",
+    "vscode": "^1.95.0",
     "node": "^22.0.0"
   },
   "main": "./out/extension.js",

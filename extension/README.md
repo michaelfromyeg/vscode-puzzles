@@ -2,7 +2,7 @@
 
 <h3 style="text-align: center"><i>Puzzles</i> allows you to sharpen your coding skills inside of <i>your tailored Visual Studio Code environment</i> and add <i>your own tests</i>.</h3><br />
 
-Solve problems from Reddit's [r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), and [CodingBat](https://codingbat.com/java) in a fully-featured IDE, rather than a ```<textarea />``` (ugh), and write custom test cases, akin to a real job interview... which is the  whole point of your practice anyway!
+Solve problems from Reddit's [/r/dailyprogrammer](https://reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), [Coding Bat](https://codingbat.com/java), and [Advent of Code](https://adventofcode.com) in a fully-featured IDE, rather than a ```<textarea />``` (ugh), and write custom test cases, akin to a real job interview... which is the whole point of your practice anyway!
 
 Use Puzzles to **prepare for technical interviews** and start **solving coding problems** like you would in actual interviews today!
 
@@ -40,7 +40,7 @@ See this in practice (and code along with me) [here](https://github.com/michaelf
 
 ## Features
 
-As mentioned, _Puzzles_ currently supports problems from r/dailyprogrammer, ProjectEuler, and CodingBat. It fetches a random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.py` file for you to begin your solution.
+As mentioned, _Puzzles_ currently supports problems from Reddit's [/r/dailyprogrammer](https://reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), [Coding Bat](https://codingbat.com/java), and [Advent of Code](https://adventofcode.com). It fetches a user-specified or random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.[py|js|ts|java|cpp]` file for you to begin your solution.
 
 An outline of planned features is below!
 
@@ -48,14 +48,14 @@ An outline of planned features is below!
 
 Here's my plan for near-future development:
 
-- [ ] Support other programming language starters
+- [x] Support other programming language starters
 - [ ] Make starters better. Include unit test templates, for example
-- [ ] Support CTCI problems
+- [ ] Support Cracking the Coding Interview problems
 - [ ] Create a custom, curated list of coding problems to use for this extension
 
 ## Requirements
 
-None required! Note that Puzzles does create fodlers and files though, so you'll likely want to create a separate workspace on your computer for your work.
+None required! Note that Puzzles does create folders and files though, so you'll likely want to create a separate workspace on your computer for your work.
 
 ## Extension Settings
 
@@ -67,13 +67,22 @@ Currently, the extension is a bit... shaky. There is a plan to stop scraping soo
 
 ## Release Notes
 
-This project was originally being part at Microsoft's VS Code hack-a-thon. It is actively under early development; if you're interested in helping grow this project, please [file a ticket](https://github.com/michaelfromyeg/vscode-puzzle/issues) or [open a pull request](https://github.com/michaelfromyeg/vscode-puzzle/pulls)!
+This project was originally being part at Microsoft's VS Code hackathon. It is actively under early development; if you're interested in helping grow this project, please [file a ticket](https://github.com/michaelfromyeg/vscode-puzzle/issues) or [open a pull request](https://github.com/michaelfromyeg/vscode-puzzle/pulls)!
+
+### 1.2.0
+
+New features:
+
+- Language support for JavaScript, TypeScript, Java, and C++
+- Advent of Code support
+- Fixed Project Euler support
+- Upgraded to Node v22
 
 ### 1.1.0
 
 New features:
 
-- Documentation overhaul and renaming from vscode-puzzle -> Puzzles
+- Documentation overhaul and renaming from `vscode-puzzle` → Puzzles
 - Get a random problem from Project Euler, _or_ select a specific problem number ([#13](https://github.com/michaelfromyeg/vscode-puzzle/issues/13))
 
 ### 1.0.0
@@ -84,6 +93,6 @@ Supported:
 
 - Problems from Reddit's r/dailyprogrammer, accessed via the Reddit API
 - Problems from Project Euler
-- Problems from CodingBat
+- Problems from Coding Bat
 - The problem statement formatted into a Markdown file
 - A pre-generated Python file for your solution

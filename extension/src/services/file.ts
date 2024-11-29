@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { render } from "mustache";
+import Mustache from "mustache";
 import * as path from "path";
 import * as vscode from "vscode";
 import { Config } from "../config";
@@ -66,7 +66,7 @@ export class FileService {
       problem: problem.problem,
     };
 
-    const markdown = render(templates.markdown, template);
+    const markdown = Mustache.render(templates.markdown, template);
     const code = templates[Config.getDefaultLanguage()];
 
     const files = [
