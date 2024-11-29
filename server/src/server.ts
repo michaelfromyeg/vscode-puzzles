@@ -1,4 +1,5 @@
 import cors from "@fastify/cors";
+import rateLimit, { RateLimitOptions } from "@fastify/rate-limit";
 import Fastify from "fastify";
 
 import * as adventOfCode from "./helpers/advent-of-code.js";
@@ -31,6 +32,59 @@ export const buildServer = async () => {
     origin: true,
   });
 
+  const rateLimitOptions: Record<string, RateLimitOptions> = {
+    reddit: {
+      max: 30,
+      timeWindow: '1 hour',
+    },
+    adventOfCode: {
+      max: 20,
+      timeWindow: '1 hour',
+    },
+    projectEuler: {
+      max: 50,
+      timeWindow: '1 hour',
+    },
+    codingBat: {
+      max: 50,
+      timeWindow: '1 hour',
+    },
+  };
+
+  await fastify.register(rateLimit, {
+    max: 100,
+    timeWindow: '1 hour',
+    errorResponseBuilder: function (request: any, context: any) {
+      return {
+        code: 429,
+        error: 'Too Many Requests',
+        message: `Rate limit exceeded, retry in ${context.after}`,
+        expiresIn: context.after,
+      }
+    }
+  });
+
+  // Configure stricter rate limits for specific puzzle sources
+  const sourceRateLimits: Record<string, number> = {
+    reddit: 30,
+    adventOfCode: 20,
+    projectEuler: 50,
+    codingBat: 50,
+  };
+
+  // TODO(michaelfromyeg): server is returning 5xxs right now, why?
+  // Object.entries(sourceRateLimits).forEach(([source, limit]) => {
+  //   fastify.addHook('onRequest', async (request, reply) => {
+  //     if (request.url.startsWith(`/puzzle/${source}`)) {
+  //       const rateLimitOpts = {
+  //         max: limit,
+  //         timeWindow: '1 hour',
+  //       };
+  //       await rateLimit(rateLimitOpts)(request, reply);
+  //     }
+  //   });
+  // });
+
   fastify.get("/health", async (request, reply) => {
     return { status: "up" };
   });
@@ -38,7 +92,21 @@ export const buildServer = async () => {
   fastify.get<{
     Querystring: PuzzleQuerystring;
     Params: PuzzleParams;
-  }>("/puzzle/:kind", async (request, reply) => {
+  }>("/puzzle/:kind", {
+    config: {
+      rateLimit: {
+        max: async (req: any) => {
+          if (!req || !req.params || !req.params.kind) {
+            return 100;
+          }
+
+          const kind = (req.params as any).kind as string;
+          return sourceRateLimits[kind] || 100; // fallback to global limit if kind not found
+        },
+        timeWindow: '1 hour'
+      }
+    }
+  }, async (request, reply) => {
     const { kind } = request.params;
     const { id } = request.query;
 
@@ -81,6 +149,10 @@ export const buildServer = async () => {
       };
     } catch (err) {
       request.log.error({ err, kind, id }, "Error processing puzzle request");
+      if ((err as any)?.statusCode === 429) {
+        return reply.code(429).send(err);
+      }
+
       return reply
         .code(500)
         .send(new Error("An error occurred while processing your request"));
