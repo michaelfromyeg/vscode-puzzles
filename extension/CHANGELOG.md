@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "extsn" extension will be documented in this file.
+~~All notable changes to the "extsn" extension will be documented in this file~~. Prefer the [README.md](./README.md) instead.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 

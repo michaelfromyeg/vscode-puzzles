@@ -40,7 +40,7 @@ See this in practice (and code along with me) [here](https://github.com/michaelf
 
 ## Features
 
-As mentioned, _Puzzles_ currently supports problems from Reddit's [/r/dailyprogrammer](https://reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), [Coding Bat](https://codingbat.com/java), and [Advent of Code](https://adventofcode.com). It fetches a user-specified or random problem for any of those three sites, creates a folder, and stores both a markdown file with the problem description and creates a `.[py|js|ts|java|cpp]` file for you to begin your solution.
+As mentioned, _Puzzles_ currently supports problems from Reddit's [/r/dailyprogrammer](https://reddit.com/r/dailyprogrammer/), [Project Euler](https://projecteuler.net/), [Coding Bat](https://codingbat.com/java), and [Advent of Code](https://adventofcode.com). It fetches a user-specified or random problem for any of those three sites, creates a folder, and stores both a Markdown file with the problem description and creates a `.[py|js|ts|java|cpp]` file for you to begin your solution. For Advent of Code, it also has the ability to fetch your problem input.
 
 An outline of planned features is below!
 
@@ -59,15 +59,22 @@ None required! Note that Puzzles does create folders and files though, so you'll
 
 ## Extension Settings
 
-In the future, there will be an option to set your preferred solving language.
+~~In the future, there will be an option to set your preferred solving language~~. You can "Set Default Language" command.
 
 ## Known Issues
 
-Currently, the extension is a bit... shaky. There is a plan to stop scraping soon and add a better data source. If you experience any issues at all, open an [issue](https://github.com/michaelfromyeg/vscode-puzzle/issues) or reach out via [email](mailto:mdemar01@student.ubc.ca?subject=%5BPuzzles%5D) for support!
+~~Currently, the extension is a bit... shaky. There is a plan to stop scraping soon and add a better data source~~. If you experience any issues at all, open an [issue](https://github.com/michaelfromyeg/vscode-puzzle/issues) or reach out via [email](mailto:michaelfromyeg@gmail.com?subject=%5BPuzzles%5D) for support!
 
 ## Release Notes
 
 This project was originally being part at Microsoft's VS Code hackathon. It is actively under early development; if you're interested in helping grow this project, please [file a ticket](https://github.com/michaelfromyeg/vscode-puzzle/issues) or [open a pull request](https://github.com/michaelfromyeg/vscode-puzzle/pulls)!
+
+### 1.3.0
+
+New features:
+
+- Advent of Code problem input support; note all session information is stored client-side via the Visual Studio Code `SecretStorage` API
+- Many bug fixes and improvements
 
 ### 1.2.0
 
