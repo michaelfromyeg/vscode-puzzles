@@ -17,6 +17,7 @@ const AOC_BASE_URL = "https://adventofcode.com";
 
 /**
  * Validate the year and day parameters for Advent of Code.
+ * Puzzles become available at midnight Eastern Time.
  *
  * @param params The year and day parameters
  * @returns boolean indicating if the parameters are valid
@@ -36,11 +37,23 @@ const validateParams = (params: string): boolean => {
       return false;
     }
 
-    // If it's current year, check if the day is available
+    // If it's current year, check if the day is available based on EST
     if (year === currentYear) {
+      // Create current time in EST
       const currentDate = new Date();
+      const estOptions = { timeZone: "America/New_York" };
+      const estTime = new Date(currentDate.toLocaleString("en-US", estOptions));
+
+      // Create puzzle release time (midnight EST on puzzle day)
       const puzzleDate = new Date(year, 11, day); // Month is 0-based
-      if (currentDate < puzzleDate) {
+      puzzleDate.setHours(0, 0, 0, 0);
+
+      // Convert puzzle date to EST for comparison
+      const puzzleEST = new Date(
+        puzzleDate.toLocaleString("en-US", estOptions)
+      );
+
+      if (estTime < puzzleEST) {
         return false;
       }
     }
@@ -149,7 +162,7 @@ export const getQuestion = async (
 
   return {
     status: 200,
-    id: `${year}/day/${day}`,
+    id: params,
     problem: he.decode(problemWithNote),
   };
 };

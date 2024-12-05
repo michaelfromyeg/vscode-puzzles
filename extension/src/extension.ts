@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-
 import { getAdventOfCodeProblem } from "./commands/adventOfCode";
 import { setDefaultLanguage } from "./commands/defaultLanguage";
 import { ApiService } from "./services/api";
@@ -27,9 +26,11 @@ export function activate(context: vscode.ExtensionContext): void {
     "extsn.getAdventOfCode": async () => {
       const params = await getAdventOfCodeProblem();
       if (params) {
+        const problemDate = new Date(params.year, 11, params.day); // Month is 0-based, so 11 is December
         await handleProblemGeneration(
           "adventOfCode",
           `${params.year}/${params.day}`,
+          { date: problemDate },
         );
       }
     },
@@ -38,10 +39,11 @@ export function activate(context: vscode.ExtensionContext): void {
   async function handleProblemGeneration(
     source: ProblemSource,
     id?: string,
+    options: { date?: Date } = {},
   ): Promise<void> {
     try {
       const problem = await apiService.fetchProblem(source, id);
-      await fileService.createProblemFiles(problem);
+      await fileService.createProblemFiles(problem, options);
       vscode.window.showInformationMessage("Problem created! Get to solving.");
     } catch (error) {
       logger.error("Failed to generate problem", error);
