@@ -9,6 +9,7 @@ import { Logger } from "../utils/logger";
 
 interface CreateProblemOptions {
   date?: Date;
+  input?: string;
 }
 
 export class FileService {
@@ -34,7 +35,7 @@ export class FileService {
     }
 
     const dirName = this.createDirectory(workspaceFolder, options.date);
-    await this.writeFiles(problem, dirName, workspaceFolder);
+    await this.writeFiles(problem, dirName, workspaceFolder, options);
   }
 
   private getWorkspaceFolder(): string | undefined {
@@ -71,6 +72,7 @@ export class FileService {
     problem: Problem,
     dirName: string,
     workspaceFolder: string,
+    options: CreateProblemOptions = {},
   ): Promise<void> {
     const template: ProblemTemplate = {
       title: "Today's Puzzle",
@@ -91,10 +93,16 @@ export class FileService {
       },
     ];
 
-    for (const file of files) {
-      const filePath = path.join(workspaceFolder, dirName, file.name);
-      await fs.promises.writeFile(filePath, file.content);
+    if (options.input) {
+      files.push({ name: "input.txt", content: options.input });
     }
+
+    await Promise.all(
+      files.map(async (file) => {
+        const filePath = path.join(workspaceFolder, dirName, file.name);
+        await fs.promises.writeFile(filePath, file.content);
+      }),
+    );
   }
 
   private getFileExtension(): string {

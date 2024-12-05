@@ -1,11 +1,6 @@
 import Axios, { AxiosResponse } from "axios";
+import { PuzzleResponse } from "../server.js";
 import { REDDIT_DAILYPROGRAMMER_BASE_URL } from "./constants.js";
-
-interface PuzzleResponse {
-  status: number;
-  id: number | string;
-  problem: string;
-}
 
 const validId = (id: string): boolean => {
   // TODO: determine whether or not a given ID is potentially a Reddit post ID
@@ -26,6 +21,7 @@ export const getQuestion = async (
       status: 400,
       id,
       problem: "",
+      error: `${id} is not a valid Reddit post ID`,
     };
   }
 

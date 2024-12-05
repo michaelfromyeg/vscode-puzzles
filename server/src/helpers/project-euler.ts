@@ -2,14 +2,9 @@ import Axios, { AxiosResponse } from "axios";
 import * as cheerio from "cheerio";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { PuzzleResponse } from "../server.js";
 import { PROJECT_EULER_BASE_URL, PROJECT_EULER_MAX } from "./constants.js";
 import { getRandomInt } from "./random.js";
-
-interface PuzzleResponse {
-  status: number;
-  id: number | string;
-  problem: string;
-}
 
 /**
  * Return true iff a given ID will yield a valid Project Euler problem, probably.
@@ -56,6 +51,7 @@ export const getQuestion = async (
       status: 400,
       id,
       problem: "",
+      error: `${id} is not a valid Project Euler problem ID`,
     };
   }
 

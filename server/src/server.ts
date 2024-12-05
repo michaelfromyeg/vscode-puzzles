@@ -16,10 +16,11 @@ interface PuzzleParams {
   kind?: string;
 }
 
-interface PuzzleResponse {
+export interface PuzzleResponse {
   status: number;
   id: number | string;
   problem: string;
+  error?: string;
 }
 
 export const buildServer = async () => {
@@ -35,33 +36,33 @@ export const buildServer = async () => {
   const rateLimitOptions: Record<string, RateLimitOptions> = {
     reddit: {
       max: 30,
-      timeWindow: '1 hour',
+      timeWindow: "1 hour",
     },
     adventOfCode: {
       max: 20,
-      timeWindow: '1 hour',
+      timeWindow: "1 hour",
     },
     projectEuler: {
       max: 50,
-      timeWindow: '1 hour',
+      timeWindow: "1 hour",
     },
     codingBat: {
       max: 50,
-      timeWindow: '1 hour',
+      timeWindow: "1 hour",
     },
   };
 
   await fastify.register(rateLimit, {
     max: 100,
-    timeWindow: '1 hour',
+    timeWindow: "1 hour",
     errorResponseBuilder: function (request: any, context: any) {
       return {
         code: 429,
-        error: 'Too Many Requests',
+        error: "Too Many Requests",
         message: `Rate limit exceeded, retry in ${context.after}`,
         expiresIn: context.after,
-      }
-    }
+      };
+    },
   });
 
   // Configure stricter rate limits for specific puzzle sources
@@ -92,72 +93,81 @@ export const buildServer = async () => {
   fastify.get<{
     Querystring: PuzzleQuerystring;
     Params: PuzzleParams;
-  }>("/puzzle/:kind", {
-    config: {
-      rateLimit: {
-        max: async (req: any) => {
-          if (!req || !req.params || !req.params.kind) {
-            return 100;
-          }
+  }>(
+    "/puzzle/:kind",
+    {
+      config: {
+        rateLimit: {
+          max: async (req: any) => {
+            if (!req || !req.params || !req.params.kind) {
+              return 100;
+            }
 
-          const kind = (req.params as any).kind as string;
-          return sourceRateLimits[kind] || 100; // fallback to global limit if kind not found
+            const kind = (req.params as any).kind as string;
+            return sourceRateLimits[kind] || 100; // fallback to global limit if kind not found
+          },
+          timeWindow: "1 hour",
         },
-        timeWindow: '1 hour'
-      }
-    }
-  }, async (request, reply) => {
-    const { kind } = request.params;
-    const { id } = request.query;
+      },
+    },
+    async (request, reply) => {
+      const { kind } = request.params;
+      const { id } = request.query;
 
-    request.log.info({ kind, id }, "Fetching puzzle");
+      request.log.info({ kind, id }, "Fetching puzzle");
 
-    let response: PuzzleResponse;
-    try {
-      switch (kind) {
-        case "reddit":
-          response = await reddit.getQuestion(id);
-          break;
-        case "projectEuler":
-          response = await projectEuler.getQuestion(id);
-          break;
-        case "codingBat":
-          response = await codingBat.getQuestion(id);
-          break;
-        case "adventOfCode":
-          response = await adventOfCode.getQuestion(id);
-          break;
-        default:
+      let response: PuzzleResponse;
+      try {
+        switch (kind) {
+          case "reddit":
+            response = await reddit.getQuestion(id);
+            break;
+          case "projectEuler":
+            response = await projectEuler.getQuestion(id);
+            break;
+          case "codingBat":
+            response = await codingBat.getQuestion(id);
+            break;
+          case "adventOfCode":
+            response = await adventOfCode.getQuestion(id);
+            break;
+          default:
+            return reply
+              .code(400)
+              .send(new Error(`${kind} is not a valid problem type`));
+        }
+
+        // TODO(michaelfromyeg): make this _far_ more robust (to show really errors)
+        if (!response?.problem || response.problem === "") {
+          request.log.warn({ kind, id }, "No data received for request");
           return reply
-            .code(400)
-            .send(new Error(`${kind} is not a valid problem type`));
-      }
+            .code(response?.status ?? 404)
+            .send(
+              new Error(
+                response?.error ?? "Problem not found or may have been deleted"
+              )
+            );
+        }
 
-      if (!response?.problem || response.problem === "") {
-        request.log.warn({ kind, id }, "No data received for request");
+        const problem = parse.render(response.problem);
+
+        return {
+          source: kind,
+          id: response.id,
+          problem,
+        };
+      } catch (err) {
+        request.log.error({ err, kind, id }, "Error processing puzzle request");
+        if ((err as any)?.statusCode === 429) {
+          return reply.code(429).send(err);
+        }
+
         return reply
-          .code(404)
-          .send(new Error("Problem not found or may have been deleted"));
+          .code(500)
+          .send(new Error("An error occurred while processing your request"));
       }
-
-      const problem = parse.render(response.problem);
-
-      return {
-        source: kind,
-        id: response.id,
-        problem,
-      };
-    } catch (err) {
-      request.log.error({ err, kind, id }, "Error processing puzzle request");
-      if ((err as any)?.statusCode === 429) {
-        return reply.code(429).send(err);
-      }
-
-      return reply
-        .code(500)
-        .send(new Error("An error occurred while processing your request"));
     }
-  });
+  );
 
   return fastify;
 };
